@@ -17,6 +17,4 @@ const reducers = combineReducers({
 
 export type AppState = ReturnType<typeof reducers>;
 
-
-// @ts-ignore: Unreachable code error
 export default createStore(reducers, compose(applyMiddleware(...middleware)));
