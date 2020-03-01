@@ -12,7 +12,7 @@ interface Props extends WithStyles<typeof styles> {
    errors: Errors
 }
 
-const styles = {
+const styles: any = {
    header: {
       marginBottom: "1em"
    },
@@ -27,6 +27,10 @@ const styles = {
       color: "red",
       fontSize: "0.8rem",
       marginBottom: "1em"
+   },
+   wrapper: {
+      display: "flex",
+      justifyContent: "center"
    }
 }
 
@@ -54,9 +58,10 @@ const Login: React.FC<Props> = ({ classes, loginUser, loading, errors }) => {
       })
    };
    return (
-      <div className={s.wrapper}>
-         <div className={s.formContainer}>
-            <div>
+      <Grid container justify="center"
+         alignItems="center">
+         <Grid item className={classes.wrapper}>
+            <div className={s.formContainer}  >
                <NavLink to={"/"}>
                   <img src={image} alt="logo" style={{ cursor: "pointer", marginBottom: "16px" }} />
                </NavLink>
@@ -75,8 +80,8 @@ const Login: React.FC<Props> = ({ classes, loginUser, loading, errors }) => {
                   <small style={{ marginTop: "1em" }}>You first time on this site? go to  <NavLink to={"/signup"}>  <span style={{ color: "red" }}>singup</span> </NavLink>  </small>
                </form>
             </div>
-         </div>
-      </div>
+         </Grid>
+      </Grid>
    );
 };
 

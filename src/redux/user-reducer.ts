@@ -1,6 +1,7 @@
 import { AppActions, LOADING_UI, SET_USER, CLEAR_ERRORS, SET_ERRORS, TOGGLE_AUTHENTICATION, toggleAuthentication, LOADING_USER, LIKE_POST, UNLIKE_POST, MARK_NOTIFICATIONS_READ } from './actions';
 import { Dispatch } from 'react';
 import axios from 'axios';
+import { ThunkType } from '../types/types';
 
 
 export interface userCredentials {
@@ -61,7 +62,6 @@ const initialState = {
 }
 
 export const userReducer = (state: State = initialState, action: AppActions) => {
-     // return state;
      switch (action.type) {
           case TOGGLE_AUTHENTICATION:
                return {
@@ -121,7 +121,7 @@ const setAuthorization = (data: AuthorizationData, history: any, dispatch: Dispa
           localStorage.setItem("UserIdToken", UserIdToken);
           dispatch({ type: LOADING_UI });
           axios.defaults.headers.common["Authorization"] = UserIdToken;
-          dispatch(getUserData());
+          dispatch(getUserData() as any);
           dispatch({ type: CLEAR_ERRORS });
           history.push("/");
      }).catch(err => {
@@ -147,7 +147,7 @@ export const loginUser = (userData: { email: string, password: string }, history
 export const signUpUser = (newUserData: { email: string, password: string, confirmPassword: string, handle: string }, history: any) => (dispatch: Dispatch<AppActions>) => {
      setAuthorization(newUserData, history, dispatch, "signup");
 }
-export const getUserData: any = () => (dispatch: Dispatch<AppActions>) => {
+export const getUserData = (): ThunkType<void> => (dispatch) => {
      dispatch({ type: LOADING_USER });
      axios.get('/user').then(({ data }) => {
           dispatch({
@@ -163,7 +163,7 @@ export const toggleAuthenticationAC = (payload: boolean): toggleAuthentication =
      type: TOGGLE_AUTHENTICATION,
      payload
 })
-export const setPicture = (formData: FormData) => async (dispatch: Dispatch<AppActions>) => {
+export const setPicture = (formData: FormData): ThunkType<Promise<void>> => async (dispatch) => {
      dispatch({ type: LOADING_USER });
      try {
           const { data } = await axios.post("/user/image", formData);
@@ -180,8 +180,7 @@ export interface EditDetails {
      location: string
 }
 
-// TODO fix error while posting empty 
-export const editDetails = (details: EditDetails) => async (dispatch: Dispatch<AppActions>) => {
+export const editDetails = (details: EditDetails): ThunkType<Promise<void>> => async (dispatch) => {
      console.log(details);
      dispatch({ type: LOADING_USER });
      try {
@@ -193,7 +192,7 @@ export const editDetails = (details: EditDetails) => async (dispatch: Dispatch<A
      }
 }
 
-export const markNotificationsRead = (notificationsIds: Array<string>) => async (dispatch: Dispatch<AppActions>) => {
+export const markNotificationsRead = (notificationsIds: Array<string>): ThunkType<Promise<void>> => async (dispatch: Dispatch<AppActions>) => {
      try {
           await axios.post("/notifications", notificationsIds);
           dispatch({ type: MARK_NOTIFICATIONS_READ })

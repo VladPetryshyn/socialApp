@@ -20,7 +20,7 @@ const Navbar: React.FC<Props> = ({ authenticated }) => {
       <AppBar position="sticky">
          <Toolbar className="nav-container">
             <Icon>
-               <NavLink to="/">
+               <NavLink to={authenticated ? "/" : "/login"}>
                   <img src={image} alt="logo" width={"100%"} height={"100%"} />
                </NavLink>
             </Icon>

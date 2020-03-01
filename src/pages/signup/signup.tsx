@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import TextField from '@material-ui/core/TextField';
-import { withStyles, WithStyles, Button, Typography, CircularProgress } from '@material-ui/core';
+import { withStyles, WithStyles, Button, Typography, CircularProgress, Grid } from '@material-ui/core';
 import image from "../../assets/saniok.png";
 import { NavLink, useHistory, Redirect } from 'react-router-dom';
 import s from "./signup.module.scss";
-import {Errors} from "../../redux/ui-reducer";
+import { Errors } from "../../redux/ui-reducer";
 interface Props extends WithStyles<typeof styles> {
    signUpUser(data: {
       email: string,
@@ -33,6 +33,10 @@ const styles = {
       fontSize: "0.8rem",
       marginBottom: "1em"
    },
+   wrapper: {
+      display: "flex",
+      justifyContent: "center"
+   }
 }
 
 interface State {
@@ -63,29 +67,31 @@ const SignUp: React.FC<Props> = ({ classes, signUpUser, errors, loading }) => {
       })
    };
 
-   return (<div className={s.wrapper}>
-      <div className={s.formContainer}>
-         <div>
-            <NavLink to={"/"}>
-               <img src={image} alt="logo" style={{ cursor: "pointer", marginBottom: "16px" }} />
-            </NavLink>
-            <Typography variant="h3" className={classes.header}>
-               Sign up
+   return (
+      <Grid container justify="center"
+         alignItems="center">
+         <Grid item className={classes.wrapper}>
+            <div className={s.formContainer}>
+               <NavLink to={"/"}>
+                  <img src={image} alt="logo" style={{ cursor: "pointer", marginBottom: "16px" }} />
+               </NavLink>
+               <Typography variant="h3" className={classes.header}>
+                  Sign up
             </Typography>
-            <form noValidate className={s.form} onSubmit={onSubmit} autoComplete={"off"}  >
-               {!!errors!.general && <Typography variant={"body2"} className={classes.customError} >
-                  {errors!.general}
-               </Typography>}
-               <TextField disabled={loading} helperText={errors!.email} id="Email" label="E-mail" variant="outlined" name="email" type="email" className={classes.input} style={{ marginBottom: "1em" }} fullWidth onChange={handleChange} error={!!errors!.email || !!errors!.general} />
-               <TextField disabled={loading} helperText={errors!.password} id="Password" label="Password" variant="outlined" name="password" type="password" className={classes.input} onChange={handleChange} value={state.password} fullWidth error={!!errors!.password || !!errors!.general} />
-               <TextField disabled={loading} helperText={errors!.confirmPassword} id="confirmPassword" label="Confirm Password" variant="outlined" name="confirmPassword" type="password" className={classes.input} onChange={handleChange} value={state.confirmPassword} fullWidth error={!!errors!.confirmPassword || !!errors!.general} />
-               <TextField disabled={loading} helperText={errors!.handle} id="Handle" label="Handle" variant="outlined" name="handle" className={classes.input} onChange={handleChange} value={state.handle} fullWidth error={!!errors!.handle || !!errors!.general} />
-               {loading ? <CircularProgress /> : <Button variant="outlined" type="submit" color="primary" className={classes.button}> Sign Up</Button>}
-               <small style={{ marginTop: "1em" }}>Already have an account? go to  <NavLink to={"/login"}>  <span style={{ color: "red" }}>Login</span> </NavLink>  </small>
-            </form>
-         </div>
-      </div>
-   </div>
+               <form noValidate className={s.form} onSubmit={onSubmit} autoComplete={"off"}  >
+                  {!!errors!.general && <Typography variant={"body2"} className={classes.customError} >
+                     {errors!.general}
+                  </Typography>}
+                  <TextField disabled={loading} helperText={errors!.email} id="Email" label="E-mail" variant="outlined" name="email" type="email" className={classes.input} style={{ marginBottom: "1em" }} fullWidth onChange={handleChange} error={!!errors!.email || !!errors!.general} />
+                  <TextField disabled={loading} helperText={errors!.password} id="Password" label="Password" variant="outlined" name="password" type="password" className={classes.input} onChange={handleChange} value={state.password} fullWidth error={!!errors!.password || !!errors!.general} />
+                  <TextField disabled={loading} helperText={errors!.confirmPassword} id="confirmPassword" label="Confirm Password" variant="outlined" name="confirmPassword" type="password" className={classes.input} onChange={handleChange} value={state.confirmPassword} fullWidth error={!!errors!.confirmPassword || !!errors!.general} />
+                  <TextField disabled={loading} helperText={errors!.handle} id="Handle" label="Handle" variant="outlined" name="handle" className={classes.input} onChange={handleChange} value={state.handle} fullWidth error={!!errors!.handle || !!errors!.general} />
+                  {loading ? <CircularProgress /> : <Button variant="outlined" type="submit" color="primary" className={classes.button}> Sign Up</Button>}
+                  <small style={{ marginTop: "1em" }}>Already have an account? go to  <NavLink to={"/login"}>  <span style={{ color: "red" }}>Login</span> </NavLink>  </small>
+               </form>
+            </div>
+         </Grid>
+      </Grid>
    );
 };
 export default withStyles(styles)(SignUp);

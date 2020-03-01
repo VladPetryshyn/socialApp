@@ -13,7 +13,7 @@ const styles: any = {
           padding: "0.5em 2em "
      },
      commentImage: {
-          maxWidth: "100%",
+          width: "100px",
           height: "100px",
           objectFit: "cover",
           borderRadius: "50%"

@@ -1,17 +1,17 @@
 import React from 'react'
-import { withStyles, WithStyles, Link, Typography, Button, IconButton, Tooltip } from '@material-ui/core';
+import { withStyles, WithStyles, Link, Typography, Button, } from '@material-ui/core';
 import { connect } from 'react-redux';
 import { AppState } from '../../redux/root-reducer';
 import { User, setPicture, logOutUser } from '../../redux/user-reducer';
 import { Paper } from '@material-ui/core';
 import { NavLink } from 'react-router-dom';
-import { LocationOn, Public, CalendarToday, Edit, ExitToApp } from '@material-ui/icons';
+import { LocationOn, Public, CalendarToday, Edit, ExitToApp, Cake } from '@material-ui/icons';
 import EditDetails from "./EditDetails";
 import dayjs from 'dayjs';
 import { MyButton } from '../../util/mybtn';
 import ProfileSkeleton from '../../util/ProfileSkeleton';
 
-/* tslint:disable-next-line */
+
 interface Props extends WithStyles<any> {
      user: User;
      loading: boolean;
@@ -22,7 +22,8 @@ interface Props extends WithStyles<any> {
 
 const styles: any = {
      paper: {
-          padding: 20
+          padding: 20,
+          background: "#330417b6",
      },
      profile: {
           '& .image-wrapper': {
@@ -67,7 +68,7 @@ const styles: any = {
           }
      }
 };
-/* tslint:enable */
+
 const Profile: React.FC<Props> = ({ classes, user: { credentials: { handle, createdAt, imageUrl, bio, website, location }, }, loading, authenticated, setPicture, logOutUser }) => {
 
      const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -76,7 +77,6 @@ const Profile: React.FC<Props> = ({ classes, user: { credentials: { handle, crea
           formData.append("image", image, image.name);
           console.log(formData);
           setPicture(formData);
-          // const img = e!.target.files[0];
      };
      const handleEditPicture = () => {
           const fileInput = document.getElementById("image-upload");
@@ -86,11 +86,11 @@ const Profile: React.FC<Props> = ({ classes, user: { credentials: { handle, crea
           logOutUser();
      }
      const profileMarkup = !loading ? (authenticated ? <Paper className={classes.paper}>
-          <div className={classes.profile}>
+          <div className={classes.profile}    >
                <div className="image-wrapper">
                     <img src={imageUrl} alt="profile" className="profile-image" />
-                    <input type="file" hidden={true} name="image" id="image-upload" onChange={handleChange} />
-                    <MyButton tip="edit profile" event={handleEditPicture} className="button" >
+                    <input type="file" hidden={true} name="image" id="image-upload" onChange={handleChange} accept=".jpg,.jpeg"  />
+                    <MyButton tip="Edit profile photo" event={handleEditPicture} className="button" >
                          <Edit color="primary" />
                     </MyButton>
                </div>
@@ -110,15 +110,9 @@ const Profile: React.FC<Props> = ({ classes, user: { credentials: { handle, crea
                               <hr />
                          </>
                     )}
-                    <CalendarToday color="primary" />
-                    <span>With us from {dayjs(createdAt).format("MMM YYYY ")}</span>
+                    <Cake color="primary" />
+                    <span> Cake day: {dayjs(createdAt).format("MMM YYYY ")}</span>
                </div>
-               {// <Tooltip title="Log out" placement="top" >
-                    //      <IconButton onClick={logOut}  >
-
-                    //      </IconButton>
-                    // </Tooltip>
-               }
                <MyButton event={logOut} tip="Log out" >
                     <ExitToApp color={"primary"} />
                </MyButton>

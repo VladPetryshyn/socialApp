@@ -24,7 +24,7 @@ const styles: any = {
           position: "absolute",
           left: "90%",
           top: "5%",
-     }
+     },
 };
 
 
@@ -84,24 +84,24 @@ const AddPost: React.FC<Props> = ({ ui: { loading, errors }, classes, addPost, c
                <Add />
           </MyButton>
           <Dialog open={state.open} onClose={handleClose} fullWidth maxWidth="sm">
-               <MyButton tip="Close" event={handleClose} className={classes.closeButton}>
-                    <Close />
-               </MyButton>
-               <DialogTitle>
-                    Add a new post
+                    <MyButton tip="Close" event={handleClose} className={classes.closeButton}>
+                         <Close />
+                    </MyButton>
+                    <DialogTitle>
+                         Add a new post
                </DialogTitle>
-               <DialogContent>
-                    <form onSubmit={handleSubmit}>
-                         <TextField name="body" error={!!errors!.body} type="text" label="Post" multiline rows="3" placeholder="Type here all you want to tell" helperText={errors!.body} className={classes.textField} fullWidth onChange={e => {
-                              setBody(e.target.value);
-                         }} autoFocus />
-                         {loading ? <CircularProgress size={30} className={classes.spinner} /> :
-                              <Button type="submit" variant="outlined" color="primary" className={classes.submitButton} disabled={loading}>
-                                   Add
+                    <DialogContent >
+                         <form onSubmit={handleSubmit}>
+                              <TextField name="body" error={!!errors!.body} type="text" label="Post" multiline rows="3" placeholder="Type here all you want to tell" helperText={errors!.body} className={classes.textField} fullWidth onChange={e => {
+                                   setBody(e.target.value);
+                              }} autoFocus />
+                              {loading ? <CircularProgress size={30} className={classes.spinner} /> :
+                                   <Button type="submit" variant="outlined" color="primary" className={classes.submitButton} disabled={loading}>
+                                        Add
                          </Button>
-                         }
-                    </form>
-               </DialogContent>
+                              }
+                         </form>
+                    </DialogContent>
           </Dialog>
      </>);
 }

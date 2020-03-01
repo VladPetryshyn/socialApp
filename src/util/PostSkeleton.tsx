@@ -13,7 +13,7 @@ const styles: any = {
      card: {
           display: "flex",
           marginBottom: 20,
-          // position:""
+          background: "#330417b6"
      },
      cardContent: {
           width: "100%",

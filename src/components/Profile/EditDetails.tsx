@@ -74,11 +74,6 @@ const EditDetailsComponent: React.FC<Props> = ({ credentials: { bio, location, w
      }
      return (
           <>
-               <Tooltip title="Edit details" placement="top" >
-                    <IconButton onClick={toggleOpen} className={classes.button}>
-
-                    </IconButton>
-               </Tooltip>
                <MyButton tip="Edit details" event={toggleOpen} className={classes.button} >
                     <Edit color="primary" />
                </MyButton>

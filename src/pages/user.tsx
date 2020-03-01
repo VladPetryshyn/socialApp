@@ -35,7 +35,6 @@ export const User: React.FC<Props> = ({ getUserData, data: { posts, loading } })
                setUser(data.user);
           });
      }, []);
-
      const PostsMarkup = loading ? <PostSkeleton /> : posts.length === 0 ? <p>This user has no posts </p> : postId === undefined ? posts.map(post => <Post key={post.postId} post={post} />) : (posts.map(post => {
           if (post.postId !== postId) return <Post key={post.postId} post={post} />
           return <Post key={post.postId} post={post} openDialog />

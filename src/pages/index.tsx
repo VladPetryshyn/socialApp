@@ -27,8 +27,6 @@ interface Props {
 }
 
 export const Index: React.FC<Props> = ({ posts, getPosts, loading }) => {
-   // const [state, setState] = useState<State | { posts: [] }>({ posts: [] });
-   // console.log(posts);
    useEffect(() => {
       getPosts();
    }, []);

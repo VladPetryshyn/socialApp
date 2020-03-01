@@ -42,7 +42,6 @@ export interface State {
 
 
 export const dataReducer = (state: State = initialState, action: AppActions) => {
-     let index;
      switch (action.type) {
           case LOADING_DATA:
                return {
@@ -50,7 +49,7 @@ export const dataReducer = (state: State = initialState, action: AppActions) => 
                     loading: true
                }
           case SET_POSTS:
-               // console.log(action.payload);
+
                return {
                     ...state,
                     posts: action.payload,
@@ -58,18 +57,23 @@ export const dataReducer = (state: State = initialState, action: AppActions) => 
                }
           case LIKE_POST:
           case UNLIKE_POST:
-               index = state.posts.findIndex(post => post.postId === action.payload.postId);
-               state.posts[index] = action.payload;
-               if (state.post!.postId === action.payload.postId) {
-                    state.post = action.payload;
+               let indexLU = state.posts.findIndex(post => post.postId === action.payload.postId);
+               state.posts[indexLU] = action.payload
+               if (state.post.postId === action.payload.postId) {
+                    state.post = {
+                         ...state.post,
+                         ...action.payload
+                    }
+
                }
+
                return {
                     ...state,
-                    posts: state.posts.map((post) => post)
+                    posts: state.posts.map(post => post)
                }
           case DELETE_POST:
-               index = state.posts.findIndex((post) => post.postId === action.payload);
-               state.posts.splice(index, 1);
+               let indexD = state.posts.findIndex((post) => post.postId === action.payload);
+               state.posts.splice(indexD, 1);
                return {
                     ...state,
                     posts: state.posts.map((post: any) => post)
@@ -83,6 +87,7 @@ export const dataReducer = (state: State = initialState, action: AppActions) => 
                     ]
                }
           case SET_POST:
+
                return {
                     ...state,
                     loading: false,
@@ -91,8 +96,18 @@ export const dataReducer = (state: State = initialState, action: AppActions) => 
           case SUBMIT_COMMENT:
                return {
                     ...state,
+                    posts: state.posts.map(post => {
+                         if (post.postId === state.post.postId) {
+                              return {
+                                   ...post,
+                                   commentsCount: post.commentsCount + 1
+                              }
+                         }
+                         return post
+                    }),
                     post: {
                          ...state.post,
+                         commentsCount: state.post.commentsCount + 1,
                          comments: [action.comment, ...state.post.comments] as Array<Comment>
                     }
                }

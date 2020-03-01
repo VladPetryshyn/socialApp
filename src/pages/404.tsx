@@ -6,7 +6,7 @@ interface Props { }
 export const NotFound: React.FC<Props> = () => (
    <Grid container>
       <Grid item sm={4} xs={12}>
-         <Card>
+         <Card style={{ background: "#330417b6" }}>
             <CardContent>
                <h1>Page isn't found</h1>
                <p>

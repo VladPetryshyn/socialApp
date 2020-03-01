@@ -1,9 +1,7 @@
-import './App.scss';
-
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import axios from 'axios';
 import JWT from 'jwt-decode';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Route, Switch } from 'react-router-dom';
 
@@ -21,15 +19,15 @@ import User from './pages/user';
 const theme: any = createMuiTheme({
    palette: {
       primary: {
-         light: "#33c0dc",
+         light: "#7d425e",
          main: "#862052",
          dark: "#60163a",
          contrastText: "#fff"
       },
       secondary: {
-         light: "#ff6333",
-         main: "#ff3d00",
-         dark: "#b22a00",
+         light: "",
+         main: "#7d425e",
+         dark: "#64344b",
          contrastText: "#fff"
       },
    },
@@ -40,6 +38,10 @@ interface Props {
    logOutUser(): void;
    getUserData(): void;
 }
+
+axios.defaults.baseURL =
+   'https://europe-west1-socialapp-eb4e3.cloudfunctions.net/api';
+
 const App: React.FC<Props> = ({ toggleAuthenticationAC, logOutUser, getUserData }) => {
    const token = localStorage.getItem("UserIdToken");
    useEffect(() => {
@@ -60,7 +62,6 @@ const App: React.FC<Props> = ({ toggleAuthenticationAC, logOutUser, getUserData 
 
    }, []);
    return (
-      //Todo refactore login and signup code
       <MuiThemeProvider theme={theme}>
          <Navbar />
          <div className="container">

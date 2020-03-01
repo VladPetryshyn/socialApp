@@ -25,7 +25,7 @@ const styles: any = {
      },
      expandButton: {
           position: "absolute",
-          right: "5%"
+          right: "4%"
      },
      invisibleSeparator: {
           border: "none",
@@ -64,7 +64,7 @@ interface Props extends WithStyles<typeof styles> {
      openDialog?: boolean;
 }
 
-const PostDialog: React.FC<Props> = ({ getPost, postId, post: { body, commentsCount, createdAt, likeCount, userHandle, userImage, comments }, ui: { loading }, classes, clearErrors, openDialog }) => {
+const PostDialog: React.FC<Props> = ({ getPost, postId, userHandle, post: { body, commentsCount, createdAt, likeCount, userImage, comments }, ui: { loading }, classes, clearErrors, openDialog }) => {
      const [state, setState] = useState({
           open: false,
           oldPath: "",
@@ -88,6 +88,7 @@ const PostDialog: React.FC<Props> = ({ getPost, postId, post: { body, commentsCo
      useEffect(() => {
           if (openDialog) handleOpen();
      }, []);
+
      return (
           <>
                <MyButton event={handleOpen} tip="Open post" className={classes.expandButton}  >

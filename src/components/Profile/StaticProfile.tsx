@@ -7,7 +7,6 @@ import dayjs from 'dayjs';
 import { User } from '../../pages/user';
 import ProfileSkeleton from '../../util/ProfileSkeleton';
 
-/* tslint:disable-next-line */
 interface Props extends WithStyles<any> {
      user: User;
      loading: boolean;
@@ -15,7 +14,8 @@ interface Props extends WithStyles<any> {
 
 const styles: any = {
      paper: {
-          padding: 20
+          padding: 20,
+          background: "#330417b6"
      },
      profile: {
           '& .image-wrapper': {
@@ -60,7 +60,6 @@ const styles: any = {
           }
      }
 };
-/* tslint:enable */
 const StaticProfile: React.FC<Props> = ({ classes, user: { handle, createdAt, imageUrl, bio, website, location }, loading, }) => {
      const profileMarkup = !loading ? <Paper className={classes.paper}>
           <div className={classes.profile}>

@@ -2,13 +2,14 @@ import React from 'react'
 import { withStyles, WithStyles, Paper } from '@material-ui/core';
 
 import NoImg from "../assets/blank-profile-picture-973460_1280.png";
-import { LocationOn, Link, CalendarToday } from '@material-ui/icons';
+import { LocationOn, Link, CalendarToday, Cake } from '@material-ui/icons';
 
 interface Props extends WithStyles<typeof styles> { }
 
 const styles: any = {
      paper: {
-          padding: 20
+          padding: 20,
+          background: "#330417b6"
      },
      profile: {
           '& .image-wrapper': {
@@ -82,9 +83,9 @@ export const ProfileSkeleton: React.FC<Props> = ({ classes }) => (
                     <div className={classes.fullLine} />
                     <LocationOn color="primary" /> <span>Location</span>
                     <hr />
-                    <Link /> https:///slug.com
+                    <Link color="primary" /> https:///slug.com
                     <hr />
-                    <CalendarToday /> Join date
+                    <Cake color="primary" /> Cake Date
                </div>
           </div>
      </Paper>

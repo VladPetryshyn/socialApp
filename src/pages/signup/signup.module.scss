@@ -1,32 +1,16 @@
-.wrapper {
-     width: 90vw;
-     height:100%;
-     display: flex;
-     justify-content: center;
-     align-items:flex-end;
-     position: absolute;
-     top:2em;
-     margin-bottom:0.5em;
-}
-
 .formContainer {
      text-align: center;
      background: #330417b6;
      padding: 1em 0;
-     width: 40vw;
-     // max-height:70vh;
      opacity: 1 !important;
-     border-radius: 5%;
+     width: 40vw;
      margin-top:0;
+     border-radius: 5%;
+     margin-bottom: 1em;
 }
 
 .form {
      display: flex;
      flex-direction: column;
      align-items: center;
-     // width: 100%;
-     // min-height: 70%;
-     // justify-content: space-around;
-     // align-items: center;
-     // background: #ffffff;
 }

@@ -7,9 +7,8 @@ import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Typography from '@material-ui/core/Typography';
 import { NavLink } from 'react-router-dom';
-import { Likes } from '../../redux/user-reducer';
 import { MyButton } from '../../util/mybtn';
-import { Message, Favorite, FavoriteBorder } from '@material-ui/icons';
+import { Message, } from '@material-ui/icons';
 import DeletePost from "./DeletePost";
 import PostDialog from './PostDialog';
 import LikeButton from "./LikeButton";
@@ -17,7 +16,8 @@ const styles: any = {
      card: {
           display: "flex",
           marginBottom: "1.2em",
-          position: "relative"
+          position: "relative",
+          background: "#330417b6"
      },
      content: {
           padding: 25
@@ -65,7 +65,7 @@ const Post: React.FC<Props> = ({ post: { userImage, body, userHandle, createdAt,
                <div className={classes.buttons}  >
                     <LikeButton postId={postId} />
                     {MySpan(`${likeCount} Likes`)}
-                    <MyButton tip="Comment" className={classes.button}  >
+                    <MyButton tip="" className={classes.button}>
                          <Message color="primary" />
                     </MyButton>
                     {MySpan(`${commentsCount} comments`)}
