@@ -71,10 +71,13 @@ const initialState: State = {
 export const userReducer = (state: State = initialState, action: AppActions): State => {
      switch (action.type) {
           case TOGGLE_AUTHENTICATION:
-               return {
-                    ...state,
-                    authenticated: action.payload
+               if (action.payload) {
+                    return {
+                         ...state,
+                         authenticated: action.payload
+                    }
                }
+               return initialState
           case SET_USER:
                console.log(action.payload.notifications);
                return {
