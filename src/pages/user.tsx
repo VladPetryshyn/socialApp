@@ -9,10 +9,11 @@ import { Grid } from '@material-ui/core';
 import Post from '../components/Post/Post';
 import StaticProfile from "../components/Profile/StaticProfile";
 import PostSkeleton from '../util/PostSkeleton';
-
+import Profile from "../components/Profile/Profile";
 interface Props {
      data: DataState;
      getUserData(handle: string): void;
+     userHandle: string
 }
 
 export interface User {
@@ -26,9 +27,10 @@ export interface User {
      location?: string
 }
 
-export const User: React.FC<Props> = ({ getUserData, data: { posts, loading } }) => {
+export const User: React.FC<Props> = ({ getUserData, data: { posts, loading }, userHandle }) => {
      const { handle, postId } = useParams();
      const [user, setUser] = useState<User>({});
+     console.log(handle);
      useEffect(() => {
           getUserData(handle as string);
           axios.get(`/user/${handle}`).then(({ data }) => {
@@ -44,13 +46,14 @@ export const User: React.FC<Props> = ({ getUserData, data: { posts, loading } })
                {PostsMarkup}
           </Grid>
           <Grid item sm={4} xs={12}>
-               <StaticProfile user={user} loading={loading} />
+               {userHandle === handle ? <Profile /> : <StaticProfile user={user} loading={loading} />}
           </Grid>
      </Grid>);
 }
 
 const mapStateToProps = (state: AppState) => ({
-     data: state.data
+     data: state.data,
+     userHandle: state.user.credentials.handle
 });
 
 export default connect(mapStateToProps, { getUserData })(User);

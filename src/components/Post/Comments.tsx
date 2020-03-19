@@ -1,11 +1,15 @@
 import React, { Fragment } from 'react'
 import { withStyles, WithStyles, Grid, Typography } from '@material-ui/core';
-import { Comment } from '../../redux/data-reducer';
+import { Comment, likeComment, unlikeComment } from '../../redux/data-reducer';
 import { NavLink } from 'react-router-dom';
 import dayjs from 'dayjs';
+import CommentLikeButton from './CommentLikeButton';
+import { connect } from 'react-redux';
 
 interface Props extends WithStyles<typeof styles> {
      comments: Array<Comment>
+     likeComment(commentId: string): void
+     unlikeComment(commentId: string): void
 }
 
 const styles: any = {
@@ -30,14 +34,17 @@ const styles: any = {
           borderBottom: "1px solid grey",
           marginBottom: "1.5em"
      },
+     buttons: {
+          marginTop: 10
+     }
 }
 
 
 
-const Comments: React.FC<Props> = ({ comments, classes }) => {
+const Comments: React.FC<Props> = ({ comments, classes, unlikeComment, likeComment }) => {
      return (<Grid container>
-          {comments.map(({ body, createdAt, userHandle, userImage }, idx) => (
-               <Fragment key={createdAt}>
+          {comments.map(({ body, createdAt, userHandle, userImage, likeCount, commentId }, idx) => (
+               <Fragment key={commentId}>
                     <Grid item sm={12} className={classes.container}  >
                          <Grid container>
                               <Grid item sm={2}>
@@ -55,6 +62,10 @@ const Comments: React.FC<Props> = ({ comments, classes }) => {
                                         <Typography variant="body1"  >
                                              {body}
                                         </Typography>
+                                        <div className={classes.buttons}>
+                                             <CommentLikeButton commentId={commentId} likeComment={likeComment} unlikeComment={unlikeComment} />
+                                             {likeCount} likes
+                                        </div>
                                    </div>
                               </Grid>
                          </Grid>
@@ -65,4 +76,4 @@ const Comments: React.FC<Props> = ({ comments, classes }) => {
      </Grid>);
 }
 
-export default withStyles(styles)(Comments);
+export default connect(null, { likeComment, unlikeComment })(withStyles(styles)(Comments));

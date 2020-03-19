@@ -1,4 +1,4 @@
-import { AppActions, LOADING_DATA, SET_POSTS, LIKE_POST, UNLIKE_POST, DELETE_POST, LOADING_UI, ADD_POST, SET_ERRORS, CLEAR_ERRORS, SET_POST, SUBMIT_COMMENT } from './actions';
+import { AppActions, LOADING_DATA, SET_POSTS, LIKE_POST, UNLIKE_POST, DELETE_POST, LOADING_UI, ADD_POST, SET_ERRORS, CLEAR_ERRORS, SET_POST, SUBMIT_COMMENT, LIKE_COMMENT, UNLIKE_COMMENT } from './actions';
 import { Dispatch } from 'react';
 import axios from 'axios';
 import { stopLoading, clearErrors } from './ui-reducer';
@@ -21,6 +21,8 @@ export interface Comment {
      createdAt: string;
      userHandle: string;
      userImage: string;
+     likeCount: number
+     commentId: string
 }
 
 export interface Post {
@@ -41,7 +43,7 @@ export interface State {
 }
 
 
-export const dataReducer = (state: State = initialState, action: AppActions) => {
+export const dataReducer = (state: State = initialState, action: AppActions): State => {
      switch (action.type) {
           case LOADING_DATA:
                return {
@@ -49,7 +51,6 @@ export const dataReducer = (state: State = initialState, action: AppActions) => 
                     loading: true
                }
           case SET_POSTS:
-
                return {
                     ...state,
                     posts: action.payload,
@@ -64,7 +65,6 @@ export const dataReducer = (state: State = initialState, action: AppActions) => 
                          ...state.post,
                          ...action.payload
                     }
-
                }
 
                return {
@@ -109,6 +109,20 @@ export const dataReducer = (state: State = initialState, action: AppActions) => 
                          ...state.post,
                          commentsCount: state.post.commentsCount + 1,
                          comments: [action.comment, ...state.post.comments] as Array<Comment>
+                    }
+               }
+          case LIKE_COMMENT:
+          case UNLIKE_COMMENT:
+               return {
+                    ...state,
+                    post: {
+                         ...state.post,
+                         comments: state.post.comments.map(comment => {
+                              if (comment.commentId === action.payload.commentId) {
+                                   return action.payload
+                              }
+                              return comment;
+                         })
                     }
                }
           default:
@@ -214,6 +228,25 @@ export const getUserData = (userHandle: string) => async (dispatch: Dispatch<App
 
      } catch (err) {
           dispatch({ type: SET_POSTS, payload: [] });
+     }
+}
+
+
+export const likeComment = (commentId: string) => async (dispatch: Dispatch<AppActions>) => {
+     try {
+          const { data } = await axios.get(`/comments/${commentId}/like`);
+          dispatch({ type: LIKE_COMMENT, payload: data })
+     } catch (err) {
+          console.log(`This error was ocurated in likeComment action. Error:${err}`);
+     }
+}
+
+export const unlikeComment = (commentId: string) => async (dispatch: Dispatch<AppActions>) => {
+     try {
+          const { data } = await axios.get(`comments/${commentId}/unlike`);
+          dispatch({ type: UNLIKE_COMMENT, payload: data });
+     } catch (err) {
+          console.log(`This error was ocurated in unlikeComment action. Error:${err}`);
      }
 }
 

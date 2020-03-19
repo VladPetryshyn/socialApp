@@ -1,4 +1,4 @@
-import { AppActions, LOADING_UI, SET_USER, CLEAR_ERRORS, SET_ERRORS, TOGGLE_AUTHENTICATION, toggleAuthentication, LOADING_USER, LIKE_POST, UNLIKE_POST, MARK_NOTIFICATIONS_READ } from './actions';
+import { AppActions, LOADING_UI, SET_USER, CLEAR_ERRORS, SET_ERRORS, TOGGLE_AUTHENTICATION, toggleAuthentication, LOADING_USER, LIKE_POST, UNLIKE_POST, MARK_NOTIFICATIONS_READ, UNLIKE_COMMENT, LIKE_COMMENT } from './actions';
 import { Dispatch } from 'react';
 import axios from 'axios';
 import { ThunkType } from '../types/types';
@@ -20,10 +20,15 @@ export type Likes = Array<{
      postId: string;
      userHandle: string;
 }>;
+export type commentLikes = Array<{
+     commentId: string;
+     userHandle: string
+}>
 export interface User {
      credentials: userCredentials,
      likes: Likes
      notifications: NotificationsTypes
+     commentLikes: commentLikes
 }
 
 export type NotificationsTypes = Array<{
@@ -34,6 +39,7 @@ export type NotificationsTypes = Array<{
      sender: string;
      type: string;
      notificationId: string;
+     postOwner: string
 }>;
 
 
@@ -44,7 +50,7 @@ interface State extends User {
 
 
 
-const initialState = {
+const initialState: State = {
      loading: false,
      authenticated: false,
      credentials: {
@@ -58,10 +64,11 @@ const initialState = {
           bio: "",
      },
      likes: [],
-     notifications: []
+     notifications: [],
+     commentLikes: []
 }
 
-export const userReducer = (state: State = initialState, action: AppActions) => {
+export const userReducer = (state: State = initialState, action: AppActions): State => {
      switch (action.type) {
           case TOGGLE_AUTHENTICATION:
                return {
@@ -69,6 +76,7 @@ export const userReducer = (state: State = initialState, action: AppActions) => 
                     authenticated: action.payload
                }
           case SET_USER:
+               console.log(action.payload.notifications);
                return {
                     loading: false,
                     authenticated: true,
@@ -94,6 +102,22 @@ export const userReducer = (state: State = initialState, action: AppActions) => 
                return {
                     ...state,
                     likes: state.likes.filter(like => like.postId !== action.payload.postId)
+               }
+          case LIKE_COMMENT:
+               return {
+                    ...state,
+                    commentLikes: [
+                         ...state.commentLikes,
+                         {
+                              userHandle: state.credentials.handle,
+                              commentId: action.payload.commentId
+                         }
+                    ]
+               }
+          case UNLIKE_COMMENT:
+               return {
+                    ...state,
+                    commentLikes: state.commentLikes.filter(like => like.commentId !== action.payload.commentId)
                }
           case MARK_NOTIFICATIONS_READ:
                state.notifications.forEach((not) => (not.read = true));

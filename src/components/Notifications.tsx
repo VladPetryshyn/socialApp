@@ -37,14 +37,15 @@ export const Notifications: React.FC<Props> = ({ notifications, markNotification
      }
      let notificationsMarkup = notifications && notifications.length > 0 ? (
           notifications.map(notification => {
-               const verb = notification.type === "like" ? "liked" : "commented on";
+               
+               const verb = notification.type === "like" || "comment-like" ? "liked" : "commented on";
                const time = dayjs(notification.createdAt).fromNow();
                const iconColor = notification.read ? "primary" : "secondary";
-               const icon = notification.type === "like" ? <Favorite color={iconColor} style={{ marginRight: "10px" }} /> : <Chat color={iconColor} style={{ marginRight: "10px" }} />
+               const icon = notification.type === "like" || "comment-like" ? <Favorite color={iconColor} style={{ marginRight: "10px" }} /> : <Chat color={iconColor} style={{ marginRight: "10px" }} />
                return <MenuItem key={notification.createdAt} onClick={handleClose}>
                     {icon}
-                    <Typography component={NavLink} color="initial" variant="body1" to={`/users/${notification.recipient}/post/${notification.postId}`}   >
-                         {notification.sender} {verb} your post {time}
+                    <Typography component={NavLink} color="initial" variant="body1" to={`/users/${notification.postOwner}/post/${notification.postId}`}   >
+                         {notification.sender} {verb} your {notification.type === "comment-like" ? "comment"  : "post"} {time}
                     </Typography>
                </MenuItem>
           })

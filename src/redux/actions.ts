@@ -1,6 +1,6 @@
-import { unlikePost, Post } from './data-reducer';
+import { unlikePost, Post, Comment } from './data-reducer';
 import { Errors } from './ui-reducer';
-import { NotificationsTypes } from './user-reducer';
+import { NotificationsTypes, commentLikes } from './user-reducer';
 //! User
 
 export const TOGGLE_AUTHENTICATION = "TOGGLE_AUTHENTICATION";
@@ -31,6 +31,7 @@ export interface setUser {
                postId: string;
                userHandle: string;
           }>;
+          commentLikes: commentLikes
           notifications: NotificationsTypes
      }
 }
@@ -87,19 +88,16 @@ export const ADD_POST = "ADD_POST";
 
 export const SUBMIT_COMMENT = "SUBMIT_COMMENT";
 
+export const LIKE_COMMENT = "LIKE_COMMENT";
+
+export const UNLIKE_COMMENT = "UNLIKE_COMMENT";
+
 export interface loadData {
      type: typeof LOADING_DATA
 }
 export interface setPosts {
      type: typeof SET_POSTS;
-     payload: Array<{
-          body: string;
-          commentsCount: number;
-          createdAt: string;
-          likeCount: number;
-          userHandle: string;
-          userImage: string;
-     }>
+     payload: Array<Post>
 }
 
 export interface likePost {
@@ -132,8 +130,17 @@ export interface submitComment {
      comment: Comment
 }
 
+export interface likeComment {
+     type: typeof LIKE_COMMENT;
+     payload: Comment
+}
 
-export type dataActions = loadData | setPosts | likePost | unlikePost | deletePost | addPost | setPost | submitComment;
+export interface unlikeComment {
+     type: typeof UNLIKE_COMMENT
+     payload: Comment
+}
+
+export type dataActions = loadData | setPosts | likePost | unlikePost | deletePost | addPost | setPost | submitComment | likeComment | unlikeComment;
 
 
 export type AppActions = UserActions | uiActions | dataActions;
