@@ -92,6 +92,8 @@ export const LIKE_COMMENT = "LIKE_COMMENT";
 
 export const UNLIKE_COMMENT = "UNLIKE_COMMENT";
 
+export const DELETE_COMMENT = 'DELETE_COMMENT';
+
 export interface loadData {
      type: typeof LOADING_DATA
 }
@@ -140,7 +142,13 @@ export interface unlikeComment {
      payload: Comment
 }
 
-export type dataActions = loadData | setPosts | likePost | unlikePost | deletePost | addPost | setPost | submitComment | likeComment | unlikeComment;
+export interface deleteComment
+{
+     type: typeof DELETE_COMMENT;
+     commentId: string;
+}
+
+export type dataActions = loadData | setPosts | likePost | unlikePost | deletePost | addPost | setPost | submitComment | likeComment | unlikeComment | deleteComment;
 
 
 export type AppActions = UserActions | uiActions | dataActions;
