@@ -13,6 +13,7 @@ import dayjs from 'dayjs';
 import { NavLink } from 'react-router-dom';
 import { Comment } from '../../redux/data-reducer';
 import { Menu, MenuItem } from '@material-ui/core';
+import { ContextMenu } from '../ContextMenu';
 interface Props extends WithStyles<typeof styles> {
 	comment: Comment;
 	isLast: boolean;
@@ -64,13 +65,6 @@ export const CommentComponent: React.FC<Props> = ({
 	deleteComment,
 	handle
 }) => {
-	const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
-	const openMenu = (e: any) => {
-		setAnchorEl(e.target as HTMLButtonElement);
-	};
-	const closeMenu = () => {
-		setAnchorEl(null);
-	};
 	return (
 		<Fragment>
 			<Grid item sm={12} className={classes.container}>
@@ -106,24 +100,19 @@ export const CommentComponent: React.FC<Props> = ({
 							</div>
 							{handle === userHandle && (
 								<div className={classes.ellipsis}>
-									<MyButton tip='Comment Menu' event={openMenu}>
-										<MoreVertIcon />
-									</MyButton>
-									<Menu
-										anchorEl={anchorEl}
-										open={!!anchorEl}
-										onClose={closeMenu}
-										style={{ marginLeft: '25px', marginTop: '15px' }}>
-										<MenuItem
-											onClick={() => {
-												deleteComment(commentId);
-												closeMenu();
-											}}>
-											<Typography color='initial' variant='body1'>
-												Delete Comment
-											</Typography>
-										</MenuItem>
-									</Menu>
+									<ContextMenu
+										tip='Comment Menu'
+										render={(closeMenu: () => void) => (
+											<MenuItem
+												onClick={() => {
+													deleteComment(commentId);
+													closeMenu();
+												}}>
+												<Typography color='initial' variant='body1'>
+													Delete Comment
+												</Typography>
+											</MenuItem>
+										)}></ContextMenu>
 								</div>
 							)}
 						</div>

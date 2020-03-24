@@ -18,6 +18,7 @@ import {
 import { Dispatch } from 'react';
 import axios from 'axios';
 import { stopLoading, clearErrors } from './ui-reducer';
+import { CHANGE_POST_BODY } from './actions';
 const initialState: State = {
 	posts: [],
 	post: {
@@ -165,6 +166,19 @@ export const dataReducer = (
 					)
 				}
 			};
+		case CHANGE_POST_BODY:
+			return {
+				...state,
+				posts: state.posts.map(post => {
+					if (post.postId === action.payload.postId) {
+						return {
+							...post,
+							body: action.payload.body
+						};
+					}
+					return post;
+				})
+			};
 		default:
 			return state;
 	}
@@ -230,7 +244,7 @@ export const deletePost = (postId: string) => async (
 	dispatch: Dispatch<AppActions>
 ) => {
 	try {
-		const { data } = await axios.delete(`/posts/${postId}`);
+		await axios.delete(`/posts/${postId}`);
 		dispatch({ type: DELETE_POST, payload: postId });
 	} catch (err) {
 		console.log(`data-reducer deletePost, error:${err}`);
@@ -312,5 +326,26 @@ export const deleteComment = (commentId: string) => async (
 		dispatch({ type: DELETE_COMMENT, commentId });
 	} catch (err) {
 		console.log(err);
+	}
+};
+
+export const changePostBody = (postId: string, body: string) => async (
+	dispatch: Dispatch<AppActions>
+) => {
+	dispatch({ type: LOADING_UI });
+	try {
+		await axios.put(`/posts/${postId}`, { body });
+		dispatch({
+			type: CHANGE_POST_BODY,
+			payload: {
+				postId,
+				body
+			}
+		});
+		dispatch(clearErrors());
+		return false;
+	} catch (err) {
+		dispatch({ type: SET_ERRORS, payload: err.response.data });
+		return true;
 	}
 };

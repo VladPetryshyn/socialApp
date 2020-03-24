@@ -3,152 +3,174 @@ import { Errors } from './ui-reducer';
 import { NotificationsTypes, commentLikes } from './user-reducer';
 //! User
 
-export const TOGGLE_AUTHENTICATION = "TOGGLE_AUTHENTICATION";
-export const SET_USER = "SET_USER";
-export const LOADING_USER = "LOADING_USER";
+export const TOGGLE_AUTHENTICATION = 'TOGGLE_AUTHENTICATION';
+export const SET_USER = 'SET_USER';
+export const LOADING_USER = 'LOADING_USER';
 
-export const MARK_NOTIFICATIONS_READ = "MARK_NOTIFICATIONS_READ";
+export const MARK_NOTIFICATIONS_READ = 'MARK_NOTIFICATIONS_READ';
 
 export interface toggleAuthentication {
-     type: typeof TOGGLE_AUTHENTICATION
-     payload: boolean;
+	type: typeof TOGGLE_AUTHENTICATION;
+	payload: boolean;
 }
 
 export interface setUser {
-     type: typeof SET_USER;
-     payload: {
-          credentials: {
-               handle: string;
-               imageUrl: string;
-               createdAt: string;
-               email: string;
-               location: string;
-               userId: string;
-               website: string;
-               bio: string;
-          },
-          likes: Array<{
-               postId: string;
-               userHandle: string;
-          }>;
-          commentLikes: commentLikes
-          notifications: NotificationsTypes
-     }
+	type: typeof SET_USER;
+	payload: {
+		credentials: {
+			handle: string;
+			imageUrl: string;
+			createdAt: string;
+			email: string;
+			location: string;
+			userId: string;
+			website: string;
+			bio: string;
+		};
+		likes: Array<{
+			postId: string;
+			userHandle: string;
+		}>;
+		commentLikes: commentLikes;
+		notifications: NotificationsTypes;
+	};
 }
 
 export interface markNotificationsRead {
-     type: typeof MARK_NOTIFICATIONS_READ;
+	type: typeof MARK_NOTIFICATIONS_READ;
 }
 
 interface loadingUser {
-     type: typeof LOADING_USER;
+	type: typeof LOADING_USER;
 }
 
-export type UserActions = toggleAuthentication | setUser | loadingUser | markNotificationsRead;
+export type UserActions =
+	| toggleAuthentication
+	| setUser
+	| loadingUser
+	| markNotificationsRead;
 
-//! UI 
-export const UI_STOP_LOADING = "UI_STOP_LOADING";
+//! UI
+export const UI_STOP_LOADING = 'UI_STOP_LOADING';
 
-export const SET_ERRORS = "SET_ERRORS";
-export const LOADING_UI = "LOADING_UI";
-export const CLEAR_ERRORS = "CLEAR_ERRORS";
+export const SET_ERRORS = 'SET_ERRORS';
+export const LOADING_UI = 'LOADING_UI';
+export const CLEAR_ERRORS = 'CLEAR_ERRORS';
 
 export interface loadingUi {
-     type: typeof LOADING_UI;
+	type: typeof LOADING_UI;
 }
 export interface clearErrors {
-     type: typeof CLEAR_ERRORS;
+	type: typeof CLEAR_ERRORS;
 }
 export interface setErrors {
-     type: typeof SET_ERRORS;
-     payload: {
-          errors: Errors
-     }
+	type: typeof SET_ERRORS;
+	payload: {
+		errors: Errors;
+	};
 }
 export interface stopLoading {
-     type: typeof UI_STOP_LOADING;
+	type: typeof UI_STOP_LOADING;
 }
 
 export type uiActions = loadingUi | clearErrors | setErrors | stopLoading;
-// ! Data 
+// ! Data
 
-export const LOADING_DATA = "LOADING_DATA";
+export const LOADING_DATA = 'LOADING_DATA';
 
-export const SET_POSTS = "SET_POSTS";
+export const SET_POSTS = 'SET_POSTS';
 
-export const SET_POST = "SET_POST";
+export const SET_POST = 'SET_POST';
 
-export const LIKE_POST = "LIKE_POST";
+export const LIKE_POST = 'LIKE_POST';
 
-export const UNLIKE_POST = "UNLIKE_POST";
+export const UNLIKE_POST = 'UNLIKE_POST';
 
-export const DELETE_POST = "DELETE_POST";
+export const DELETE_POST = 'DELETE_POST';
 
-export const ADD_POST = "ADD_POST";
+export const ADD_POST = 'ADD_POST';
 
-export const SUBMIT_COMMENT = "SUBMIT_COMMENT";
+export const SUBMIT_COMMENT = 'SUBMIT_COMMENT';
 
-export const LIKE_COMMENT = "LIKE_COMMENT";
+export const LIKE_COMMENT = 'LIKE_COMMENT';
 
-export const UNLIKE_COMMENT = "UNLIKE_COMMENT";
+export const UNLIKE_COMMENT = 'UNLIKE_COMMENT';
 
 export const DELETE_COMMENT = 'DELETE_COMMENT';
 
+export const CHANGE_POST_BODY = 'CHANGE_POST_BODY';
 export interface loadData {
-     type: typeof LOADING_DATA
+	type: typeof LOADING_DATA;
 }
 export interface setPosts {
-     type: typeof SET_POSTS;
-     payload: Array<Post>
+	type: typeof SET_POSTS;
+	payload: Array<Post>;
 }
 
 export interface likePost {
-     type: typeof LIKE_POST,
-     payload: Post
+	type: typeof LIKE_POST;
+	payload: Post;
 }
 
 export interface addPost {
-     type: typeof ADD_POST,
-     payload: Post
+	type: typeof ADD_POST;
+	payload: Post;
 }
 
 export interface unlikePost {
-     type: typeof UNLIKE_POST,
-     payload: Post
+	type: typeof UNLIKE_POST;
+	payload: Post;
 }
 
 export interface deletePost {
-     type: typeof DELETE_POST;
-     payload: string;
+	type: typeof DELETE_POST;
+	payload: string;
 }
 
 export interface setPost {
-     type: typeof SET_POST,
-     post: Post
+	type: typeof SET_POST;
+	post: Post;
 }
 
 export interface submitComment {
-     type: typeof SUBMIT_COMMENT;
-     comment: Comment
+	type: typeof SUBMIT_COMMENT;
+	comment: Comment;
 }
 
 export interface likeComment {
-     type: typeof LIKE_COMMENT;
-     payload: Comment
+	type: typeof LIKE_COMMENT;
+	payload: Comment;
 }
 
 export interface unlikeComment {
-     type: typeof UNLIKE_COMMENT
-     payload: Comment
+	type: typeof UNLIKE_COMMENT;
+	payload: Comment;
 }
 
-export interface deleteComment
-{
-     type: typeof DELETE_COMMENT;
-     commentId: string;
+export interface deleteComment {
+	type: typeof DELETE_COMMENT;
+	commentId: string;
 }
 
-export type dataActions = loadData | setPosts | likePost | unlikePost | deletePost | addPost | setPost | submitComment | likeComment | unlikeComment | deleteComment;
-
+export interface changePostBody {
+	type: typeof CHANGE_POST_BODY;
+	payload: {
+		postId: string;
+		body: string;
+	};
+}
+export type dataActions =
+	| loadData
+	| setPosts
+	| likePost
+	| unlikePost
+	| deletePost
+	| addPost
+	| setPost
+	| submitComment
+	| likeComment
+	| unlikeComment
+	| deleteComment
+	| changePostBody;
 
 export type AppActions = UserActions | uiActions | dataActions;
