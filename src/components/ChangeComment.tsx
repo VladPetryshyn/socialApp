@@ -1,37 +1,32 @@
-import React, { useEffect, useState } from 'react';
-import { useForm, Controller } from 'react-hook-form';
+import React, { useState, useEffect } from 'react';
 import {
+	MenuItem,
 	Typography,
 	Dialog,
-	DialogTitle,
-	DialogContent,
 	createStyles,
-	withStyles
+	WithStyles,
+	withStyles,
+	TextField,
+	Button,
+	DialogTitle,
+	DialogContent
 } from '@material-ui/core';
+import { useForm, Controller } from 'react-hook-form';
 import { connect } from 'react-redux';
 import { AppState } from '../redux/root-reducer';
-import { Errors, clearErrors } from '../redux/ui-reducer';
-import TextField from '@material-ui/core/TextField';
-import {
-	Button,
-	WithStyles,
-	MenuItem,
-	CircularProgress
-} from '@material-ui/core';
-import { changePostBody } from '../redux/data-reducer';
+import { clearErrors, Errors } from '../redux/ui-reducer';
 import { MyButton } from '../util/mybtn';
 import { Close } from '@material-ui/icons';
+import { CircularProgress } from '@material-ui/core';
+import { changeCommentBody } from '../redux/data-reducer';
+
 interface Props extends WithStyles<typeof styles> {
-	errorsUi: Errors;
-	loading: boolean;
 	body: string;
 	clearErrors(): void;
-	changePostBody(postId: string, body: string): Promise<boolean>;
-	postId: string;
+	changeCommentBody(commentId: string, body: string): Promise<boolean>;
+	errors: Errors;
+	commentId: string;
 	closeMenu(): void;
-}
-interface Form {
-	body: string;
 }
 
 const styles = createStyles({
@@ -51,28 +46,22 @@ const styles = createStyles({
 	}
 });
 
-export const ChangePost: React.FC<Props> = ({
-	errorsUi,
-	loading,
+export const ChangeComment: React.FC<Props> = ({
 	body,
 	clearErrors,
 	classes,
-	postId,
-	changePostBody,
+	errors,
+	changeCommentBody,
+	commentId,
 	closeMenu
 }) => {
 	const [isOpen, setOpen] = useState(false);
-	const { control, handleSubmit, setValue } = useForm<Form>({
+	const [isLoading, setLoading] = useState(false);
+	const { setValue, handleSubmit, control } = useForm<{ body: string }>({
 		defaultValues: {
 			body
 		}
 	});
-	useEffect(() => {
-		if (!errorsUi && !loading) {
-			clearErrors();
-			setOpen(true);
-		}
-	}, [loading, errorsUi]);
 	const handleOpen = () => {
 		setValue('body', body);
 		setOpen(true);
@@ -81,15 +70,22 @@ export const ChangePost: React.FC<Props> = ({
 		clearErrors();
 		setOpen(false);
 	};
+	useEffect(() => {
+		if (!errors) {
+			clearErrors();
+			setOpen(true);
+		}
+	}, [errors]);
 	const onSubmit = handleSubmit(({ body }) => {
-		changePostBody(postId, body).then(res => {
+		setLoading(true);
+		changeCommentBody(commentId, body).then(res => {
 			if (!res) {
 				handleClose();
 				closeMenu();
 			}
+			setLoading(false);
 		});
 	});
-
 	return (
 		<>
 			<MenuItem onClick={handleOpen}>
@@ -104,33 +100,33 @@ export const ChangePost: React.FC<Props> = ({
 					className={classes.closeButton}>
 					<Close />
 				</MyButton>
-				<DialogTitle>Edit Your Post</DialogTitle>
+				<DialogTitle>Edit Your Comment</DialogTitle>
 				<DialogContent>
 					<form onSubmit={onSubmit}>
 						<Controller
 							control={control}
-							name='body'
 							as={
 								<TextField
+									error={!!errors!.body}
+									helperText={errors!.body}
+									placeholder='Edit Your Comment'
 									type='text'
-									label='Edit Your Post'
+									label='Edit Your Comment'
 									multiline
 									rows='3'
-									placeholder='Edit Your Post'
 									fullWidth
-									error={!!errorsUi!.body}
-									helperText={errorsUi!.body!}
 								/>
 							}
+							name='body'
 						/>
-						{loading ? (
+						{isLoading ? (
 							<CircularProgress size={30} className={classes.spinner} />
 						) : (
 							<Button
 								type='submit'
-								className={classes.submitButton}
 								variant='outlined'
-								color='primary'>
+								color='primary'
+								className={classes.submitButton}>
 								Submit
 							</Button>
 						)}
@@ -140,11 +136,11 @@ export const ChangePost: React.FC<Props> = ({
 		</>
 	);
 };
+
 const mapStateToProps = (state: AppState) => ({
-	loading: state.ui.loading,
-	errorsUi: state.ui.errors
+	errors: state.ui.errors
 });
 
-export default connect(mapStateToProps, { clearErrors, changePostBody })(
-	withStyles(styles)(ChangePost)
+export default connect(mapStateToProps, { clearErrors, changeCommentBody })(
+	withStyles(styles)(ChangeComment)
 );

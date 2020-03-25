@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import { Grid } from '@material-ui/core';
-import Post from '../components/Post/Post';
+import Post from '../components/Post/PostContainer';
 import StaticProfile from '../components/Profile/StaticProfile';
 import PostSkeleton from '../util/PostSkeleton';
 import Profile from '../components/Profile/Profile';
@@ -35,7 +35,7 @@ export const User: React.FC<Props> = ({
 	const { handle, postId } = useParams();
 	const [user, setUser] = useState<User>({});
 	useEffect(() => {
-		getUserData(handle as string);
+		getUserData(handle!);
 		axios.get(`/user/${handle}`).then(({ data }) => {
 			setUser(data.user);
 		});

@@ -233,7 +233,7 @@ export const setPicture = (
 ): ThunkType<Promise<void>> => async dispatch => {
 	dispatch({ type: LOADING_USER });
 	try {
-		const { data } = await axios.post('/user/image', formData);
+		await axios.post('/user/image', formData);
 		dispatch(getUserData());
 	} catch (err) {
 		console.log(`error in user-reducer, setPicture function error:${err}`);
@@ -252,7 +252,7 @@ export const editDetails = (
 	console.log(details);
 	dispatch({ type: LOADING_USER });
 	try {
-		const { data } = await axios.post('/user', details);
+		await axios.post('/user', details);
 		dispatch(getUserData());
 	} catch (err) {
 		console.log(`user-reducer editDetails Error:${err}`);

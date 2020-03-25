@@ -1,33 +1,35 @@
-import React from 'react'
+import React from 'react';
 import { connect } from 'react-redux';
 import { AppState } from '../../redux/root-reducer';
-import Post from "./Post";
-import { likePost, unlikePost } from '../../redux/data-reducer';
-import { Likes } from '../../redux/user-reducer';
+import PostComponent from './Post';
+import { likePost, unlikePost, Post } from '../../redux/data-reducer';
 interface Props {
-     handle: string;
-     image: string;
-     post: {
-          body: string;
-          createdAt: string,
-          userHandle: string,
-          userImage: string,
-          likeCount: number,
-          commentsCount: number,
-          postId: string
-     };
-     authenticated: boolean;
+	handle: string;
+	image: string;
+	post: Post;
+	openDialog?: boolean;
 }
-const PostContainer: React.FC<Props> = ({ handle, image, post, authenticated }) => (
-     <Post handle={handle} image={image} post={post} authenticated={authenticated} />
-)
+const PostContainer: React.FC<Props> = ({
+	handle,
+	image,
+	post,
+	openDialog
+}) => (
+	<PostComponent
+		handle={handle}
+		image={image}
+		post={post}
+		openDialog={openDialog}
+	/>
+);
 const mapStateToProps = (state: AppState) => {
-     return {
-          handle: state.user.credentials.handle,
-          image: state.user.credentials.imageUrl,
-          likes: state.user.likes,
-          authenticated: state.user.authenticated
-     }
-}
+	return {
+		handle: state.user.credentials.handle,
+		image: state.user.credentials.imageUrl,
+		likes: state.user.likes
+	};
+};
 
-export default connect(mapStateToProps, { likePost, unlikePost })(PostContainer);
+export default connect(mapStateToProps, { likePost, unlikePost })(
+	PostContainer
+);

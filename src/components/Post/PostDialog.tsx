@@ -72,6 +72,8 @@ interface Props extends WithStyles<typeof styles> {
 	ui: UiState;
 	clearErrors(): void;
 	openDialog?: boolean;
+	image: string;
+	handle: string;
 }
 
 const PostDialog: React.FC<Props> = ({
@@ -82,7 +84,9 @@ const PostDialog: React.FC<Props> = ({
 	ui: { loading },
 	classes,
 	clearErrors,
-	openDialog
+	openDialog,
+	handle,
+	image
 }) => {
 	const [state, setState] = useState({
 		open: false,
@@ -107,7 +111,7 @@ const PostDialog: React.FC<Props> = ({
 	useEffect(() => {
 		if (openDialog) handleOpen();
 	}, []);
-
+	const isOwner = handle === userHandle;
 	return (
 		<>
 			<MyButton
@@ -125,7 +129,7 @@ const PostDialog: React.FC<Props> = ({
 				<DialogContent className={classes.dialogContent}>
 					{loading ? (
 						<div className={classes.progressContainer}>
-							<CircularProgress size={100} thickness={2} />{' '}
+							<CircularProgress size={100} thickness={2} />
 						</div>
 					) : (
 						<Grid container spacing={10}>
@@ -137,7 +141,7 @@ const PostDialog: React.FC<Props> = ({
 							</MyButton>
 							<Grid item sm={5}>
 								<img
-									src={userImage}
+									src={isOwner ? image : userImage}
 									alt='Profile'
 									className={classes.profileImage}
 								/>
@@ -177,7 +181,9 @@ const PostDialog: React.FC<Props> = ({
 
 const mapStateToProps = (state: AppState) => ({
 	post: state.data.post,
-	ui: state.ui
+	ui: state.ui,
+	handle: state.user.credentials.handle,
+	image: state.user.credentials.imageUrl
 });
 
 export default connect(mapStateToProps, { getPost, clearErrors })(

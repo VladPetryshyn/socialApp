@@ -18,7 +18,7 @@ import {
 import { Dispatch } from 'react';
 import axios from 'axios';
 import { stopLoading, clearErrors } from './ui-reducer';
-import { CHANGE_POST_BODY } from './actions';
+import { CHANGE_POST_BODY, CHANGE_COMMENT_BODY } from './actions';
 const initialState: State = {
 	posts: [],
 	post: {
@@ -40,6 +40,7 @@ export interface Comment {
 	userImage: string;
 	likeCount: number;
 	commentId: string;
+	isEdited: boolean;
 }
 
 export interface Post {
@@ -52,7 +53,6 @@ export interface Post {
 	postId: string;
 	comments: Array<Comment>;
 }
-
 export interface State {
 	posts: Array<Post>;
 	post: Post;
@@ -179,6 +179,22 @@ export const dataReducer = (
 					return post;
 				})
 			};
+		case CHANGE_COMMENT_BODY:
+			return {
+				...state,
+				post: {
+					...state.post,
+					comments: state.post.comments.map(comment => {
+						if (comment.commentId === action.payload.commentId) {
+							return {
+								...comment,
+								body: action.payload.body
+							};
+						}
+						return comment;
+					})
+				}
+			};
 		default:
 			return state;
 	}
@@ -285,7 +301,6 @@ export const getUserData = (userHandle: string) => async (
 	dispatch({ type: LOADING_DATA });
 	try {
 		const { data } = await axios.get(`/user/${userHandle}`);
-		// console.log(data);
 		dispatch({ type: SET_POSTS, payload: data.posts });
 	} catch (err) {
 		dispatch({ type: SET_POSTS, payload: [] });
@@ -339,6 +354,28 @@ export const changePostBody = (postId: string, body: string) => async (
 			type: CHANGE_POST_BODY,
 			payload: {
 				postId,
+				body
+			}
+		});
+		dispatch(clearErrors());
+		return false;
+	} catch (err) {
+		dispatch({ type: SET_ERRORS, payload: err.response.data });
+		return true;
+	}
+};
+
+export const changeCommentBody = (commentId: string, body: string) => async (
+	dispatch: Dispatch<AppActions>
+) => {
+	try {
+		await axios.put(`/comments/${commentId}`, {
+			body
+		});
+		dispatch({
+			type: CHANGE_COMMENT_BODY,
+			payload: {
+				commentId,
 				body
 			}
 		});

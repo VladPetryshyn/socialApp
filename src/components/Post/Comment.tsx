@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from 'react';
+import React, { Fragment } from 'react';
 import {
 	Grid,
 	Typography,
@@ -6,14 +6,15 @@ import {
 	createStyles,
 	withStyles
 } from '@material-ui/core';
-import MoreVertIcon from '@material-ui/icons/MoreVert';
 import CommentLikeButton from './CommentLikeButton';
-import { MyButton } from '../../util/mybtn';
 import dayjs from 'dayjs';
 import { NavLink } from 'react-router-dom';
 import { Comment } from '../../redux/data-reducer';
-import { Menu, MenuItem } from '@material-ui/core';
+import { MenuItem } from '@material-ui/core';
 import { ContextMenu } from '../ContextMenu';
+import { connect } from 'react-redux';
+import { AppState } from '../../redux/root-reducer';
+import ChangeComment from '../ChangeComment';
 interface Props extends WithStyles<typeof styles> {
 	comment: Comment;
 	isLast: boolean;
@@ -21,6 +22,7 @@ interface Props extends WithStyles<typeof styles> {
 	likeComment(commentId: string): void;
 	unlikeComment(commentId: string): void;
 	deleteComment(commentId: string): void;
+	image: string;
 }
 
 const styles = createStyles({
@@ -63,15 +65,17 @@ export const CommentComponent: React.FC<Props> = ({
 	likeComment,
 	unlikeComment,
 	deleteComment,
-	handle
+	handle,
+	image
 }) => {
+	const isOwner = handle === userHandle;
 	return (
 		<Fragment>
 			<Grid item sm={12} className={classes.container}>
 				<Grid container>
 					<Grid item sm={2}>
 						<img
-							src={userImage}
+							src={isOwner ? image : userImage}
 							alt='comment'
 							className={classes.commentImage}
 						/>
@@ -98,21 +102,31 @@ export const CommentComponent: React.FC<Props> = ({
 								/>
 								{likeCount} likes
 							</div>
-							{handle === userHandle && (
+							{isOwner && (
 								<div className={classes.ellipsis}>
 									<ContextMenu
 										tip='Comment Menu'
 										render={(closeMenu: () => void) => (
-											<MenuItem
-												onClick={() => {
-													deleteComment(commentId);
-													closeMenu();
-												}}>
-												<Typography color='initial' variant='body1'>
-													Delete Comment
-												</Typography>
-											</MenuItem>
-										)}></ContextMenu>
+											<>
+												<MenuItem
+													onClick={() => {
+														deleteComment(commentId);
+														closeMenu();
+													}}>
+													<Typography
+														color='initial'
+														variant='body1'>
+														Delete Comment
+													</Typography>
+												</MenuItem>
+												<ChangeComment
+													closeMenu={closeMenu}
+													body={body}
+													commentId={commentId}
+												/>
+											</>
+										)}
+									/>
 								</div>
 							)}
 						</div>
@@ -124,4 +138,9 @@ export const CommentComponent: React.FC<Props> = ({
 	);
 };
 
-export default withStyles(styles)(CommentComponent);
+const mapStateToProps = (state: AppState) => ({
+	handle: state.user.credentials.handle,
+	image: state.user.credentials.imageUrl
+});
+
+export default connect(mapStateToProps)(withStyles(styles)(CommentComponent));

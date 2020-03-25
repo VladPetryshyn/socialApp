@@ -7,7 +7,8 @@ import {
 	DialogContent,
 	TextField,
 	Button,
-	CircularProgress
+	CircularProgress,
+	createStyles
 } from '@material-ui/core';
 import { AppState } from '../redux/root-reducer';
 import { connect } from 'react-redux';
@@ -17,8 +18,7 @@ import { MyButton } from '../util/mybtn';
 import { Add, Close } from '@material-ui/icons';
 import { useEffect } from 'react';
 
-const styles: any = {
-	button: {},
+const styles = createStyles({
 	submitButton: {
 		position: 'relative',
 		marginTop: '1em',
@@ -33,7 +33,7 @@ const styles: any = {
 		left: '90%',
 		top: '5%'
 	}
-};
+});
 
 interface Props extends WithStyles<typeof styles> {
 	addPost(body: string): Promise<boolean>;
@@ -56,7 +56,6 @@ const AddPost: React.FC<Props> = ({
 		open: false,
 		errors: null
 	});
-	// const [open, setOpen] = useState(false);
 	useEffect(() => {
 		if (errors) {
 			setState(prevState => ({
@@ -117,7 +116,6 @@ const AddPost: React.FC<Props> = ({
 							rows='3'
 							placeholder='Type here all you want to tell'
 							helperText={errors!.body}
-							className={classes.textField}
 							fullWidth
 							value={body}
 							onChange={e => {

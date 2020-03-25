@@ -99,6 +99,9 @@ export const UNLIKE_COMMENT = 'UNLIKE_COMMENT';
 export const DELETE_COMMENT = 'DELETE_COMMENT';
 
 export const CHANGE_POST_BODY = 'CHANGE_POST_BODY';
+
+export const CHANGE_COMMENT_BODY = 'CHANGE_COMMENT_BODY';
+
 export interface loadData {
 	type: typeof LOADING_DATA;
 }
@@ -159,6 +162,14 @@ export interface changePostBody {
 		body: string;
 	};
 }
+
+export interface changeCommentBody {
+	type: typeof CHANGE_COMMENT_BODY;
+	payload: {
+		commentId: string;
+		body: string;
+	};
+}
 export type dataActions =
 	| loadData
 	| setPosts
@@ -171,6 +182,7 @@ export type dataActions =
 	| likeComment
 	| unlikeComment
 	| deleteComment
-	| changePostBody;
+	| changePostBody
+	| changeCommentBody;
 
 export type AppActions = UserActions | uiActions | dataActions;

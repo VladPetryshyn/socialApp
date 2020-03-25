@@ -17,7 +17,6 @@ import { Message } from '@material-ui/icons';
 import DeletePost from './DeletePost';
 import PostDialog from './PostDialog';
 import LikeButton from './LikeButton';
-import { deletePost } from '../../redux/data-reducer';
 import { ContextMenu } from '../ContextMenu';
 import ChangePost from '../ChangePost';
 const styles = createStyles({
@@ -46,8 +45,8 @@ const styles = createStyles({
 	}
 });
 interface Props extends WithStyles<typeof styles> {
-	handle?: string;
-	image?: string;
+	handle: string;
+	image: string;
 	post: {
 		body: string;
 		createdAt: string;
@@ -57,7 +56,6 @@ interface Props extends WithStyles<typeof styles> {
 		commentsCount: number;
 		postId: string;
 	};
-	authenticated?: boolean;
 	openDialog?: boolean;
 }
 
@@ -74,12 +72,11 @@ const Post: React.FC<Props> = ({
 	classes,
 	handle,
 	image,
-	authenticated,
 	openDialog
 }) => {
 	dayjs.extend(relativeTime);
 
-	const isOwner = () => userHandle === handle && authenticated;
+	const isOwner = () => userHandle === handle;
 	const MySpan = (text: string) => (
 		<span style={{ marginLeft: '0.5em' }}>{text}</span>
 	);
@@ -110,7 +107,11 @@ const Post: React.FC<Props> = ({
 										<DeletePost postId={postId} />
 									</MenuItem>
 
-									<ChangePost body={body} postId={postId} />
+									<ChangePost
+										closeMenu={closeMenu}
+										body={body}
+										postId={postId}
+									/>
 								</>
 							)}
 						/>
