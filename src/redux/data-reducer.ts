@@ -188,7 +188,8 @@ export const dataReducer = (
 						if (comment.commentId === action.payload.commentId) {
 							return {
 								...comment,
-								body: action.payload.body
+								body: action.payload.body,
+								isEdited: true
 							};
 						}
 						return comment;

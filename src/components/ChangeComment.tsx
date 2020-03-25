@@ -90,7 +90,7 @@ export const ChangeComment: React.FC<Props> = ({
 		<>
 			<MenuItem onClick={handleOpen}>
 				<Typography variant='body1' color='initial'>
-					Edit Post
+					Edit Comment
 				</Typography>
 			</MenuItem>
 			<Dialog open={isOpen} onClose={handleClose} fullWidth maxWidth='sm'>

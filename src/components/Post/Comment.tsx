@@ -60,7 +60,15 @@ const styles = createStyles({
 
 export const CommentComponent: React.FC<Props> = ({
 	classes,
-	comment: { body, userHandle, userImage, commentId, createdAt, likeCount },
+	comment: {
+		body,
+		userHandle,
+		userImage,
+		commentId,
+		createdAt,
+		likeCount,
+		isEdited
+	},
 	isLast,
 	likeComment,
 	unlikeComment,
@@ -92,6 +100,11 @@ export const CommentComponent: React.FC<Props> = ({
 							<Typography variant='body2' color='textSecondary'>
 								{dayjs(createdAt).format('h:mm a, MMMM DD YYYY')}
 							</Typography>
+							{isEdited && (
+								<Typography variant='body2' color='secondary'>
+									edited
+								</Typography>
+							)}
 							<hr className={classes.invisibleSeparator} />
 							<Typography variant='body1'>{body}</Typography>
 							<div className={classes.buttons}>
