@@ -1,58 +1,63 @@
 {
-  "name": "skill-share",
-  "version": "0.1.0",
-  "private": true,
-  "dependencies": {
-    "@material-ui/core": "^4.9.3",
-    "@material-ui/icons": "^4.5.1",
-    "@testing-library/jest-dom": "^4.2.4",
-    "@testing-library/react": "^9.3.2",
-    "@testing-library/user-event": "^7.1.2",
-    "@types/jest": "^24.0.0",
-    "@types/jwt-decode": "^2.2.1",
-    "@types/node": "^12.0.0",
-    "@types/react": "^16.9.0",
-    "@types/react-dom": "^16.9.0",
-    "@types/react-redux": "^7.1.7",
-    "@types/react-router-dom": "^5.1.3",
-    "axios": "^0.19.2",
-    "dayjs": "^1.8.19",
-    "jwt-decode": "^2.2.0",
-    "node-sass": "^4.13.1",
-    "react": "^16.12.0",
-    "react-dom": "^16.12.0",
-    "react-hook-form": "^5.1.3",
-    "react-redux": "^7.1.3",
-    "react-router-dom": "^5.1.2",
-    "react-scripts": "^3.3.0",
-    "redux": "^4.0.5",
-    "redux-thunk": "^2.3.0",
-    "sass-loader": "^8.0.2",
-    "typescript": "^3.7.5"
-  },
-  "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
-  },
-  "eslintConfig": {
-    "extends": "react-app"
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
-  },
-  "devDependencies": {
-    "@types/material-ui": "^0.21.7"
-  },
-  "proxy": "https://europe-west1-socialapp-eb4e3.cloudfunctions.net/api"
+	"name": "skill-share",
+	"version": "0.1.0",
+	"private": true,
+	"dependencies": {
+		"@material-ui/core": "^4.9.3",
+		"@material-ui/icons": "^4.5.1",
+		"@testing-library/jest-dom": "^5.7.0",
+		"@testing-library/react": "^10.0.4",
+		"@types/jest": "^25.2.1",
+		"@types/jwt-decode": "^2.2.1",
+		"@types/node": "^12.0.0",
+		"@types/react": "^16.9.0",
+		"@types/react-dom": "^16.9.0",
+		"@types/react-redux": "^7.1.7",
+		"@types/react-router-dom": "^5.1.2",
+		"@types/react-test-renderer": "^16.9.2",
+		"axios": "^0.19.2",
+		"dayjs": "^1.8.19",
+		"jwt-decode": "^2.2.0",
+		"node-sass": "^4.13.1",
+		"react": "^16.12.0",
+		"react-dom": "^16.12.0",
+		"react-hook-form": "^5.1.3",
+		"react-redux": "^7.1.3",
+		"react-router-dom": "^5.1.2",
+		"react-scripts": "^3.3.0",
+		"react-test-renderer": "^16.13.1",
+		"redux": "^4.0.5",
+		"redux-thunk": "^2.3.0",
+		"sass-loader": "^8.0.2",
+		"ts-jest": "^25.5.1",
+		"typescript": "^3.7.5"
+	},
+	"scripts": {
+		"start": "react-scripts start",
+		"build": "react-scripts build",
+		"test": "jest",
+		"test:watch": "jest --watch",
+		"eject": "react-scripts eject"
+	},
+	"eslintConfig": {
+		"extends": "react-app"
+	},
+	"browserslist": {
+		"production": [
+			">0.2%",
+			"not dead",
+			"not op_mini all"
+		],
+		"development": [
+			"last 1 chrome version",
+			"last 1 firefox version",
+			"last 1 safari version"
+		]
+	},
+	"devDependencies": {
+		"@types/material-ui": "^0.21.7",
+		"identity-obj-proxy": "^3.0.0",
+		"react-hook-form-devtools": "^1.2.0"
+	},
+	"proxy": "https://europe-west1-socialapp-eb4e3.cloudfunctions.net/api"
 }

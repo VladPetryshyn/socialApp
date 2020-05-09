@@ -1,16 +1,10 @@
-import React, { Fragment } from 'react';
-import {
-	withStyles,
-	WithStyles,
-	Grid,
-	Typography,
-	createStyles
-} from '@material-ui/core';
+import React from 'react';
+import { Grid } from '@material-ui/core';
 import {
 	Comment,
 	likeComment,
 	unlikeComment,
-	deleteComment
+	deleteComment,
 } from '../../redux/data-reducer';
 import { connect } from 'react-redux';
 import CommentComponent from './Comment';
@@ -26,7 +20,7 @@ const Comments: React.FC<Props> = ({
 	comments,
 	unlikeComment,
 	likeComment,
-	deleteComment
+	deleteComment,
 }) => {
 	return (
 		<Grid container>
@@ -46,5 +40,5 @@ const Comments: React.FC<Props> = ({
 export default connect(null, {
 	likeComment,
 	unlikeComment,
-	deleteComment
+	deleteComment,
 })(Comments);

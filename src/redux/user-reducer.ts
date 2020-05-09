@@ -11,7 +11,7 @@ import {
 	UNLIKE_POST,
 	MARK_NOTIFICATIONS_READ,
 	UNLIKE_COMMENT,
-	LIKE_COMMENT
+	LIKE_COMMENT,
 } from './actions';
 import { Dispatch } from 'react';
 import axios from 'axios';
@@ -70,11 +70,11 @@ const initialState: State = {
 		location: '',
 		userId: '',
 		website: '',
-		bio: ''
+		bio: '',
 	},
 	likes: [],
 	notifications: [],
-	commentLikes: []
+	commentLikes: [],
 };
 
 export const userReducer = (
@@ -86,7 +86,7 @@ export const userReducer = (
 			if (action.payload) {
 				return {
 					...state,
-					authenticated: action.payload
+					authenticated: action.payload,
 				};
 			}
 			return initialState;
@@ -94,12 +94,12 @@ export const userReducer = (
 			return {
 				loading: false,
 				authenticated: true,
-				...action.payload
+				...action.payload,
 			};
 		case LOADING_USER:
 			return {
 				...state,
-				loading: true
+				loading: true,
 			};
 		case LIKE_POST:
 			return {
@@ -108,16 +108,16 @@ export const userReducer = (
 					...state.likes,
 					{
 						userHandle: state.credentials.handle,
-						postId: action.payload.postId
-					}
-				]
+						postId: action.payload.postId,
+					},
+				],
 			};
 		case UNLIKE_POST:
 			return {
 				...state,
 				likes: state.likes.filter(
-					like => like.postId !== action.payload.postId
-				)
+					(like) => like.postId !== action.payload.postId
+				),
 			};
 		case LIKE_COMMENT:
 			return {
@@ -126,21 +126,24 @@ export const userReducer = (
 					...state.commentLikes,
 					{
 						userHandle: state.credentials.handle,
-						commentId: action.payload.commentId
-					}
-				]
+						commentId: action.payload.commentId,
+					},
+				],
 			};
 		case UNLIKE_COMMENT:
 			return {
 				...state,
 				commentLikes: state.commentLikes.filter(
-					like => like.commentId !== action.payload.commentId
-				)
+					(like) => like.commentId !== action.payload.commentId
+				),
 			};
 		case MARK_NOTIFICATIONS_READ:
-			state.notifications.forEach(not => (not.read = true));
 			return {
-				...state
+				...state,
+				notifications: state.notifications.map((not) => ({
+					...not,
+					read: true,
+				})),
 			};
 		default:
 			return state;
@@ -167,7 +170,7 @@ const setAuthorization = (
 	dispatch({ type: LOADING_UI });
 	axios
 		.post(`/${route}`, data)
-		.then(res => {
+		.then((res) => {
 			const UserIdToken = `Bearer ${res.data.token}`;
 			localStorage.setItem('UserIdToken', UserIdToken);
 			dispatch({ type: LOADING_UI });
@@ -176,7 +179,7 @@ const setAuthorization = (
 			dispatch({ type: CLEAR_ERRORS });
 			history.push('/');
 		})
-		.catch(err => {
+		.catch((err) => {
 			console.log(err);
 			dispatch({ type: LOADING_UI });
 			dispatch({ type: SET_ERRORS, payload: err.response.data });
@@ -207,17 +210,17 @@ export const signUpUser = (
 ) => (dispatch: Dispatch<AppActions>) => {
 	setAuthorization(newUserData, history, dispatch, 'signup');
 };
-export const getUserData = (): ThunkType<void> => dispatch => {
+export const getUserData = (): ThunkType<void> => (dispatch) => {
 	dispatch({ type: LOADING_USER });
 	axios
 		.get('/user')
 		.then(({ data }) => {
 			dispatch({
 				type: SET_USER,
-				payload: data
+				payload: data,
 			});
 		})
-		.catch(err => {
+		.catch((err) => {
 			console.log(`user-reducer getUserData action. Error:${err}`);
 		});
 };
@@ -226,11 +229,11 @@ export const toggleAuthenticationAC = (
 	payload: boolean
 ): toggleAuthentication => ({
 	type: TOGGLE_AUTHENTICATION,
-	payload
+	payload,
 });
 export const setPicture = (
 	formData: FormData
-): ThunkType<Promise<void>> => async dispatch => {
+): ThunkType<Promise<void>> => async (dispatch) => {
 	dispatch({ type: LOADING_USER });
 	try {
 		await axios.post('/user/image', formData);
@@ -248,7 +251,7 @@ export interface EditDetails {
 
 export const editDetails = (
 	details: EditDetails
-): ThunkType<Promise<void>> => async dispatch => {
+): ThunkType<Promise<void>> => async (dispatch) => {
 	console.log(details);
 	dispatch({ type: LOADING_USER });
 	try {

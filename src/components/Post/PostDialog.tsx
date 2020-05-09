@@ -8,7 +8,7 @@ import {
 	CircularProgress,
 	Grid,
 	Typography,
-	createStyles
+	createStyles,
 } from '@material-ui/core';
 import { AppState } from '../../redux/root-reducer';
 import { Post, getPost } from '../../redux/data-reducer';
@@ -26,42 +26,42 @@ const styles = createStyles({
 	visibleSeparator: {
 		width: '100%',
 		borderBottom: '1px solid grey',
-		marginBottom: '1.5em'
+		marginBottom: '1.5em',
 	},
 	dialog: {
-		minHeight: '350px'
+		minHeight: '350px',
 	},
 	expandButton: {
 		position: 'absolute',
-		right: '4%'
+		right: '4%',
 	},
 	invisibleSeparator: {
 		border: 'none',
-		margin: 4
+		margin: 4,
 	},
 	profileImage: {
 		width: 200,
 		height: 200,
 		borderRadius: '50%',
-		objectFit: 'cover'
+		objectFit: 'cover',
 	},
 	dialogContent: {
 		overflowX: 'hidden',
-		padding: 20
+		padding: 20,
 	},
 	closeButton: {
 		position: 'absolute',
 		right: '5%',
-		top: '3%'
+		top: '3%',
 	},
 	progressContainer: {
 		textAlign: 'center',
 		marginTop: 50,
-		marginBottom: 50
+		marginBottom: 50,
 	},
 	button: {
-		marginLeft: '1em'
-	}
+		marginLeft: '1em',
+	},
 });
 
 interface Props extends WithStyles<typeof styles> {
@@ -86,12 +86,12 @@ const PostDialog: React.FC<Props> = ({
 	clearErrors,
 	openDialog,
 	handle,
-	image
+	image,
 }) => {
 	const [state, setState] = useState({
 		open: false,
 		oldPath: '',
-		newPath: ''
+		newPath: '',
 	});
 	const handleOpen = () => {
 		let oldPath = window.location.pathname;
@@ -110,15 +110,16 @@ const PostDialog: React.FC<Props> = ({
 	};
 	useEffect(() => {
 		if (openDialog) handleOpen();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 	const isOwner = handle === userHandle;
 	return (
 		<>
 			<MyButton
 				event={handleOpen}
-				tip='Open post'
+				tip="Open post"
 				className={classes.expandButton}>
-				<UnfoldMore color='primary' />
+				<UnfoldMore color="primary" />
 			</MyButton>
 			<Dialog
 				open={state.open}
@@ -134,7 +135,7 @@ const PostDialog: React.FC<Props> = ({
 					) : (
 						<Grid container spacing={10}>
 							<MyButton
-								tip='Close'
+								tip="Close"
 								event={handleClose}
 								className={classes.closeButton}>
 								<Close />
@@ -142,7 +143,7 @@ const PostDialog: React.FC<Props> = ({
 							<Grid item sm={5}>
 								<img
 									src={isOwner ? image : userImage}
-									alt='Profile'
+									alt="Profile"
 									className={classes.profileImage}
 								/>
 							</Grid>
@@ -150,21 +151,21 @@ const PostDialog: React.FC<Props> = ({
 								<Typography
 									component={NavLink}
 									color={'primary'}
-									variant='h2'
+									variant="h2"
 									to={`/users/${userHandle}`}>
 									{userHandle}
 								</Typography>
 								<hr className={classes.invisibleSeparator} />
-								<Typography variant='body2' color='textSecondary'>
+								<Typography variant="body2" color="textSecondary">
 									{dayjs(createdAt).format('h:mm a, MMMM DD YYYY')}
 								</Typography>
 								<hr className={classes.invisibleSeparator} />
-								<Typography variant='body1'>{body}</Typography>
-								<LikeButton postId={postId} />{' '}
+								<Typography variant="body1">{body}</Typography>
+								<LikeButton postId={postId} />
 								<span>{likeCount} likes </span>
-								<MyButton tip='' className={classes.button}>
-									<Message color='primary' />
-								</MyButton>{' '}
+								<MyButton tip="" className={classes.button}>
+									<Message color="primary" />
+								</MyButton>
 								<span>{commentsCount} comments </span>
 							</Grid>
 							<hr className={classes.visibleSeparator} />
@@ -183,7 +184,7 @@ const mapStateToProps = (state: AppState) => ({
 	post: state.data.post,
 	ui: state.ui,
 	handle: state.user.credentials.handle,
-	image: state.user.credentials.imageUrl
+	image: state.user.credentials.imageUrl,
 });
 
 export default connect(mapStateToProps, { getPost, clearErrors })(

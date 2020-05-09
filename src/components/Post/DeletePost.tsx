@@ -6,11 +6,9 @@ import {
 	DialogTitle,
 	DialogActions,
 	Dialog,
-	Button
+	Button,
 } from '@material-ui/core';
 import { Props } from './Props';
-import { MyButton } from '../../util/mybtn';
-import { DeleteOutline } from '@material-ui/icons';
 import { useState } from 'react';
 import Typography from '@material-ui/core/Typography';
 
@@ -18,24 +16,24 @@ export const styles: any = {
 	deleteButton: {
 		top: '10%',
 		left: '90%',
-		position: 'absolute'
-	}
+		position: 'absolute',
+	},
 };
 
 const DeletePost: React.FC<Props> = ({ postId, deletePost, classes }) => {
 	const [isOpen, setOpen] = useState(false);
 	const toggleOpen = () => {
-		setOpen(prev => !prev);
+		setOpen((prev) => !prev);
 	};
 	return (
 		<>
-			<Typography color='initial' variant='body1' onClick={toggleOpen}>
+			<Typography color="initial" variant="body1" onClick={toggleOpen}>
 				Delete Post
 			</Typography>
-			<Dialog open={isOpen} onClose={toggleOpen} fullWidth maxWidth='sm'>
+			<Dialog open={isOpen} onClose={toggleOpen} fullWidth maxWidth="sm">
 				<DialogTitle>Confirm Deletion?</DialogTitle>
 				<DialogActions>
-					<Button onClick={toggleOpen} color='primary'>
+					<Button onClick={toggleOpen} color="primary">
 						CANCEL
 					</Button>
 					<Button
@@ -43,7 +41,7 @@ const DeletePost: React.FC<Props> = ({ postId, deletePost, classes }) => {
 							deletePost(postId);
 							toggleOpen();
 						}}
-						color='secondary'>
+						color="secondary">
 						OK
 					</Button>
 				</DialogActions>

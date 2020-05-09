@@ -13,7 +13,7 @@ import {
 	SUBMIT_COMMENT,
 	LIKE_COMMENT,
 	UNLIKE_COMMENT,
-	DELETE_COMMENT
+	DELETE_COMMENT,
 } from './actions';
 import { Dispatch } from 'react';
 import axios from 'axios';
@@ -29,9 +29,9 @@ const initialState: State = {
 		userHandle: '',
 		userImage: '',
 		postId: '',
-		comments: []
+		comments: [],
 	},
-	loading: false
+	loading: false,
 };
 export interface Comment {
 	body: string;
@@ -67,59 +67,60 @@ export const dataReducer = (
 		case LOADING_DATA:
 			return {
 				...state,
-				loading: true
+				loading: true,
 			};
 		case SET_POSTS:
 			return {
 				...state,
 				posts: action.payload,
-				loading: false
+				loading: false,
 			};
 		case LIKE_POST:
 		case UNLIKE_POST:
-			let indexLU = state.posts.findIndex(
-				post => post.postId === action.payload.postId
-			);
-			state.posts[indexLU] = action.payload;
-			if (state.post.postId === action.payload.postId) {
-				state.post = {
-					...state.post,
-					...action.payload
-				};
-			}
-
 			return {
 				...state,
-				posts: state.posts.map(post => post)
+				posts: state.posts.map((post) => {
+					if (state.post.postId === action.payload.postId) {
+						return action.payload;
+					}
+					return post;
+				}),
+				post:
+					state.post.postId === action.payload.postId
+						? {
+								...state.post,
+								...action.payload,
+						  }
+						: state.post,
 			};
 		case DELETE_POST:
 			let indexD = state.posts.findIndex(
-				post => post.postId === action.payload
+				(post) => post.postId === action.payload
 			);
 			state.posts.splice(indexD, 1);
 			return {
 				...state,
-				posts: state.posts.map((post: any) => post)
+				posts: state.posts.map((post: any) => post),
 			};
 		case ADD_POST:
 			return {
 				...state,
-				posts: [action.payload, ...state.posts]
+				posts: [action.payload, ...state.posts],
 			};
 		case SET_POST:
 			return {
 				...state,
 				loading: false,
-				post: action.post
+				post: action.post,
 			};
 		case SUBMIT_COMMENT:
 			return {
 				...state,
-				posts: state.posts.map(post => {
+				posts: state.posts.map((post) => {
 					if (post.postId === state.post.postId) {
 						return {
 							...post,
-							commentsCount: post.commentsCount + 1
+							commentsCount: post.commentsCount + 1,
 						};
 					}
 					return post;
@@ -129,8 +130,8 @@ export const dataReducer = (
 					commentsCount: state.post.commentsCount + 1,
 					comments: [action.comment, ...state.post.comments] as Array<
 						Comment
-					>
-				}
+					>,
+				},
 			};
 		case LIKE_COMMENT:
 		case UNLIKE_COMMENT:
@@ -138,22 +139,22 @@ export const dataReducer = (
 				...state,
 				post: {
 					...state.post,
-					comments: state.post.comments.map(comment => {
+					comments: state.post.comments.map((comment) => {
 						if (comment.commentId === action.payload.commentId) {
 							return action.payload;
 						}
 						return comment;
-					})
-				}
+					}),
+				},
 			};
 		case DELETE_COMMENT:
 			return {
 				...state,
-				posts: state.posts.map(post => {
+				posts: state.posts.map((post) => {
 					if (post.postId === state.post.postId) {
 						return {
 							...post,
-							commentsCount: post.commentsCount - 1
+							commentsCount: post.commentsCount - 1,
 						};
 					}
 					return post;
@@ -162,39 +163,39 @@ export const dataReducer = (
 					...state.post,
 					commentsCount: state.post.commentsCount - 1,
 					comments: state.post.comments.filter(
-						comment => comment.commentId !== action.commentId
-					)
-				}
+						(comment) => comment.commentId !== action.commentId
+					),
+				},
 			};
 		case CHANGE_POST_BODY:
 			return {
 				...state,
-				posts: state.posts.map(post => {
+				posts: state.posts.map((post) => {
 					if (post.postId === action.payload.postId) {
 						return {
 							...post,
-							body: action.payload.body
+							body: action.payload.body,
 						};
 					}
 					return post;
-				})
+				}),
 			};
 		case CHANGE_COMMENT_BODY:
 			return {
 				...state,
 				post: {
 					...state.post,
-					comments: state.post.comments.map(comment => {
+					comments: state.post.comments.map((comment) => {
 						if (comment.commentId === action.payload.commentId) {
 							return {
 								...comment,
 								body: action.payload.body,
-								isEdited: true
+								isEdited: true,
 							};
 						}
 						return comment;
-					})
-				}
+					}),
+				},
 			};
 		default:
 			return state;
@@ -233,15 +234,15 @@ export const addPost = (body: string) => async (
 		.then(({ data }) => {
 			dispatch({
 				type: ADD_POST,
-				payload: data
+				payload: data,
 			});
 			dispatch({ type: CLEAR_ERRORS });
 			return false;
 		})
-		.catch(err => {
+		.catch((err) => {
 			dispatch({
 				type: SET_ERRORS,
-				payload: err.response.data
+				payload: err.response.data,
 			});
 			return true;
 		});
@@ -286,7 +287,7 @@ export const addCommentAC = (postId: string, text: string) => async (
 ) => {
 	try {
 		const { data } = await axios.post(`/posts/${postId}/comment`, {
-			body: text
+			body: text,
 		});
 		dispatch({ type: SUBMIT_COMMENT, comment: data });
 		dispatch(clearErrors());
@@ -355,8 +356,8 @@ export const changePostBody = (postId: string, body: string) => async (
 			type: CHANGE_POST_BODY,
 			payload: {
 				postId,
-				body
-			}
+				body,
+			},
 		});
 		dispatch(clearErrors());
 		return false;
@@ -371,14 +372,14 @@ export const changeCommentBody = (commentId: string, body: string) => async (
 ) => {
 	try {
 		await axios.put(`/comments/${commentId}`, {
-			body
+			body,
 		});
 		dispatch({
 			type: CHANGE_COMMENT_BODY,
 			payload: {
 				commentId,
-				body
-			}
+				body,
+			},
 		});
 		dispatch(clearErrors());
 		return false;

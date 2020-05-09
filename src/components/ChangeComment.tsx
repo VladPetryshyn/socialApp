@@ -9,7 +9,7 @@ import {
 	TextField,
 	Button,
 	DialogTitle,
-	DialogContent
+	DialogContent,
 } from '@material-ui/core';
 import { useForm, Controller } from 'react-hook-form';
 import { connect } from 'react-redux';
@@ -33,17 +33,17 @@ const styles = createStyles({
 	submitButton: {
 		position: 'relative',
 		marginTop: '1em',
-		float: 'right'
+		float: 'right',
 	},
 	spinner: {
 		marginTop: '1em',
-		float: 'right'
+		float: 'right',
 	},
 	closeButton: {
 		position: 'absolute',
 		left: '90%',
-		top: '5%'
-	}
+		top: '5%',
+	},
 });
 
 export const ChangeComment: React.FC<Props> = ({
@@ -53,14 +53,14 @@ export const ChangeComment: React.FC<Props> = ({
 	errors,
 	changeCommentBody,
 	commentId,
-	closeMenu
+	closeMenu,
 }) => {
 	const [isOpen, setOpen] = useState(false);
 	const [isLoading, setLoading] = useState(false);
 	const { setValue, handleSubmit, control } = useForm<{ body: string }>({
 		defaultValues: {
-			body
-		}
+			body,
+		},
 	});
 	const handleOpen = () => {
 		setValue('body', body);
@@ -75,10 +75,10 @@ export const ChangeComment: React.FC<Props> = ({
 			clearErrors();
 			setOpen(true);
 		}
-	}, [errors]);
+	}, [errors, clearErrors]);
 	const onSubmit = handleSubmit(({ body }) => {
 		setLoading(true);
-		changeCommentBody(commentId, body).then(res => {
+		changeCommentBody(commentId, body).then((res) => {
 			if (!res) {
 				handleClose();
 				closeMenu();
@@ -89,13 +89,13 @@ export const ChangeComment: React.FC<Props> = ({
 	return (
 		<>
 			<MenuItem onClick={handleOpen}>
-				<Typography variant='body1' color='initial'>
+				<Typography variant="body1" color="initial">
 					Edit Comment
 				</Typography>
 			</MenuItem>
-			<Dialog open={isOpen} onClose={handleClose} fullWidth maxWidth='sm'>
+			<Dialog open={isOpen} onClose={handleClose} fullWidth maxWidth="sm">
 				<MyButton
-					tip='Close'
+					tip="Close"
 					event={handleClose}
 					className={classes.closeButton}>
 					<Close />
@@ -109,23 +109,23 @@ export const ChangeComment: React.FC<Props> = ({
 								<TextField
 									error={!!errors!.body}
 									helperText={errors!.body}
-									placeholder='Edit Your Comment'
-									type='text'
-									label='Edit Your Comment'
+									placeholder="Edit Your Comment"
+									type="text"
+									label="Edit Your Comment"
 									multiline
-									rows='3'
+									rows="3"
 									fullWidth
 								/>
 							}
-							name='body'
+							name="body"
 						/>
 						{isLoading ? (
 							<CircularProgress size={30} className={classes.spinner} />
 						) : (
 							<Button
-								type='submit'
-								variant='outlined'
-								color='primary'
+								type="submit"
+								variant="outlined"
+								color="primary"
 								className={classes.submitButton}>
 								Submit
 							</Button>
@@ -138,7 +138,7 @@ export const ChangeComment: React.FC<Props> = ({
 };
 
 const mapStateToProps = (state: AppState) => ({
-	errors: state.ui.errors
+	errors: state.ui.errors,
 });
 
 export default connect(mapStateToProps, { clearErrors, changeCommentBody })(

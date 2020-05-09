@@ -1,15 +1,14 @@
 import React, { useState } from 'react';
-import { MyButton } from '../util/mybtn';
 import {
 	Notifications as Notification,
 	Favorite,
-	Chat
+	Chat,
 } from '@material-ui/icons';
 import { connect } from 'react-redux';
 import { AppState } from '../redux/root-reducer';
 import {
 	NotificationsTypes,
-	markNotificationsRead
+	markNotificationsRead,
 } from '../redux/user-reducer';
 import {
 	Badge,
@@ -17,7 +16,7 @@ import {
 	Tooltip,
 	Menu,
 	Typography,
-	MenuItem
+	MenuItem,
 } from '@material-ui/core';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
@@ -30,22 +29,22 @@ interface Props {
 
 export const Notifications: React.FC<Props> = ({
 	notifications,
-	markNotificationsRead
+	markNotificationsRead,
 }) => {
 	const [anchorElement, setAnchorElement] = useState(null);
 	let notificationIcon;
 	dayjs.extend(relativeTime);
 	if (notifications && notifications.length > 0) {
 		notificationIcon =
-			notifications.filter(notification => notification.read === false)
+			notifications.filter((notification) => notification.read === false)
 				.length > 0 ? (
 				<Badge
 					badgeContent={
 						notifications.filter(
-							notification => notification.read === false
+							(notification) => notification.read === false
 						).length
 					}
-					color='secondary'>
+					color="secondary">
 					<Notification />
 				</Badge>
 			) : (
@@ -62,13 +61,13 @@ export const Notifications: React.FC<Props> = ({
 	};
 	const onMenuOpened = () => {
 		let unreadNotificationsIds = notifications
-			.filter(not => !not.read)
-			.map(not => not.notificationId);
+			.filter((not) => !not.read)
+			.map((not) => not.notificationId);
 		markNotificationsRead(unreadNotificationsIds);
 	};
 	let notificationsMarkup =
 		notifications && notifications.length > 0 ? (
-			notifications.map(notification => {
+			notifications.map((notification) => {
 				const verb =
 					notification.type === 'like' || 'comment-like'
 						? 'liked'
@@ -86,8 +85,8 @@ export const Notifications: React.FC<Props> = ({
 						{icon}
 						<Typography
 							component={NavLink}
-							color='initial'
-							variant='body1'
+							color="initial"
+							variant="body1"
 							to={`/users/${notification.postOwner}/post/${notification.postId}`}>
 							{notification.sender} {verb} your{' '}
 							{notification.type === 'comment-like' ? 'comment' : 'post'}{' '}
@@ -104,7 +103,7 @@ export const Notifications: React.FC<Props> = ({
 		);
 	return (
 		<>
-			<Tooltip title='Notifications' placement='top'>
+			<Tooltip title="Notifications" placement="top">
 				<IconButton
 					aria-owns={anchorElement ? 'simple-menu' : undefined}
 					aria-haspopup={true}
@@ -125,7 +124,7 @@ export const Notifications: React.FC<Props> = ({
 };
 
 const mapStateToProps = (state: AppState) => ({
-	notifications: state.user.notifications
+	notifications: state.user.notifications,
 });
 
 export default connect(mapStateToProps, { markNotificationsRead })(

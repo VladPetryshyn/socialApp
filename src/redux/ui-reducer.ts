@@ -1,13 +1,11 @@
-import { CHANGE_COMMENT_BODY } from './actions';
 import {
 	AppActions,
 	LOADING_UI,
 	CLEAR_ERRORS,
 	SET_ERRORS,
 	clearErrors as ClearErrors,
-	SET_POST,
 	stopLoading as StopLoading,
-	UI_STOP_LOADING
+	UI_STOP_LOADING,
 } from './actions';
 
 interface State {
@@ -27,7 +25,7 @@ export type Errors = {
 
 const initialState = {
 	loading: false,
-	errors: {}
+	errors: {},
 };
 
 export type UiState = State;
@@ -37,23 +35,23 @@ export const uiReducer = (state: State = initialState, action: AppActions) => {
 		case SET_ERRORS:
 			return {
 				loading: false,
-				errors: { ...action.payload.errors }
+				errors: { ...action.payload.errors },
 			};
 		case CLEAR_ERRORS:
 			return {
 				...state,
 				loading: false,
-				errors: {}
+				errors: {},
 			};
 		case LOADING_UI:
 			return {
 				...state,
-				loading: !state.loading
+				loading: !state.loading,
 			};
 		case UI_STOP_LOADING:
 			return {
 				...state,
-				loading: false
+				loading: false,
 			};
 		default:
 			return state;
@@ -61,8 +59,8 @@ export const uiReducer = (state: State = initialState, action: AppActions) => {
 };
 
 export const clearErrors = (): ClearErrors => ({
-	type: CLEAR_ERRORS
+	type: CLEAR_ERRORS,
 });
 export const stopLoading = (): StopLoading => ({
-	type: UI_STOP_LOADING
+	type: UI_STOP_LOADING,
 });

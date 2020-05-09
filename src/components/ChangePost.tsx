@@ -6,7 +6,7 @@ import {
 	DialogTitle,
 	DialogContent,
 	createStyles,
-	withStyles
+	withStyles,
 } from '@material-ui/core';
 import { connect } from 'react-redux';
 import { AppState } from '../redux/root-reducer';
@@ -16,20 +16,31 @@ import {
 	Button,
 	WithStyles,
 	MenuItem,
-	CircularProgress
+	CircularProgress,
 } from '@material-ui/core';
 import { changePostBody } from '../redux/data-reducer';
 import { MyButton } from '../util/mybtn';
 import { Close } from '@material-ui/icons';
-interface Props extends WithStyles<typeof styles> {
+interface StateProps {
 	errorsUi: Errors;
 	loading: boolean;
-	body: string;
+}
+
+interface DispatchProps {
 	clearErrors(): void;
 	changePostBody(postId: string, body: string): Promise<boolean>;
+}
+
+interface OwnProps {
+	body: string;
 	postId: string;
 	closeMenu(): void;
 }
+
+export type Props = WithStyles<typeof styles> &
+	OwnProps &
+	DispatchProps &
+	StateProps;
 interface Form {
 	body: string;
 }
@@ -38,17 +49,17 @@ const styles = createStyles({
 	submitButton: {
 		position: 'relative',
 		marginTop: '1em',
-		float: 'right'
+		float: 'right',
 	},
 	spinner: {
 		marginTop: '1em',
-		float: 'right'
+		float: 'right',
 	},
 	closeButton: {
 		position: 'absolute',
 		left: '90%',
-		top: '5%'
-	}
+		top: '5%',
+	},
 });
 
 export const ChangePost: React.FC<Props> = ({
@@ -59,20 +70,20 @@ export const ChangePost: React.FC<Props> = ({
 	classes,
 	postId,
 	changePostBody,
-	closeMenu
+	closeMenu,
 }) => {
 	const [isOpen, setOpen] = useState(false);
 	const { control, handleSubmit, setValue } = useForm<Form>({
 		defaultValues: {
-			body
-		}
+			body,
+		},
 	});
 	useEffect(() => {
 		if (!errorsUi && !loading) {
 			clearErrors();
 			setOpen(true);
 		}
-	}, [loading, errorsUi]);
+	}, [loading, errorsUi, clearErrors]);
 	const handleOpen = () => {
 		setValue('body', body);
 		setOpen(true);
@@ -82,7 +93,7 @@ export const ChangePost: React.FC<Props> = ({
 		setOpen(false);
 	};
 	const onSubmit = handleSubmit(({ body }) => {
-		changePostBody(postId, body).then(res => {
+		changePostBody(postId, body).then((res) => {
 			if (!res) {
 				handleClose();
 				closeMenu();
@@ -93,13 +104,13 @@ export const ChangePost: React.FC<Props> = ({
 	return (
 		<>
 			<MenuItem onClick={handleOpen}>
-				<Typography variant='body1' color='initial'>
+				<Typography variant="body1" color="initial">
 					Edit Post
 				</Typography>
 			</MenuItem>
-			<Dialog open={isOpen} onClose={handleClose} fullWidth maxWidth='sm'>
+			<Dialog open={isOpen} onClose={handleClose} fullWidth maxWidth="sm">
 				<MyButton
-					tip='Close'
+					tip="Close"
 					event={handleClose}
 					className={classes.closeButton}>
 					<Close />
@@ -109,14 +120,14 @@ export const ChangePost: React.FC<Props> = ({
 					<form onSubmit={onSubmit}>
 						<Controller
 							control={control}
-							name='body'
+							name="body"
 							as={
 								<TextField
-									type='text'
-									label='Edit Your Post'
+									type="text"
+									label="Edit Your Post"
 									multiline
-									rows='3'
-									placeholder='Edit Your Post'
+									rows="3"
+									placeholder="Edit Your Post"
 									fullWidth
 									error={!!errorsUi!.body}
 									helperText={errorsUi!.body!}
@@ -127,10 +138,10 @@ export const ChangePost: React.FC<Props> = ({
 							<CircularProgress size={30} className={classes.spinner} />
 						) : (
 							<Button
-								type='submit'
+								type="submit"
 								className={classes.submitButton}
-								variant='outlined'
-								color='primary'>
+								variant="outlined"
+								color="primary">
 								Submit
 							</Button>
 						)}
@@ -142,7 +153,7 @@ export const ChangePost: React.FC<Props> = ({
 };
 const mapStateToProps = (state: AppState) => ({
 	loading: state.ui.loading,
-	errorsUi: state.ui.errors
+	errorsUi: state.ui.errors,
 });
 
 export default connect(mapStateToProps, { clearErrors, changePostBody })(

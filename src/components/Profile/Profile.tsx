@@ -18,13 +18,17 @@ import dayjs from 'dayjs';
 import { MyButton } from '../../util/mybtn';
 import ProfileSkeleton from '../../util/ProfileSkeleton';
 
-interface Props extends WithStyles<any> {
+interface StateProps {
 	user: User;
 	loading: boolean;
 	authenticated: boolean;
+}
+interface DispatchProps {
 	setPicture(formData: FormData): void;
 	logOutUser(): void;
 }
+
+type Props = WithStyles<typeof styles> & DispatchProps & StateProps;
 
 const styles = createStyles({
 	paper: {
@@ -190,12 +194,13 @@ const Profile: React.FC<Props> = ({
 	return profileMarkup;
 };
 
-const mapStateToProps = (state: AppState) => ({
+const mapStateToProps = (state: AppState): StateProps => ({
 	user: state.user,
 	loading: state.user.loading,
 	authenticated: state.user.authenticated
 });
 
-export default connect(mapStateToProps, { setPicture, logOutUser })(
-	withStyles(styles)(Profile)
-);
+export default connect<StateProps, DispatchProps, {}, AppState>(
+	mapStateToProps,
+	{ setPicture, logOutUser }
+)(withStyles(styles)(Profile));

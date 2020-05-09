@@ -14,7 +14,7 @@ import SignUp from './pages/signup/signupContainer';
 import {
 	getUserData,
 	logOutUser,
-	toggleAuthenticationAC
+	toggleAuthenticationAC,
 } from './redux/user-reducer';
 import User from './pages/user';
 
@@ -24,15 +24,15 @@ const theme: any = createMuiTheme({
 			light: '#7d425e',
 			main: '#862052',
 			dark: '#60163a',
-			contrastText: '#fff'
+			contrastText: '#fff',
 		},
 		secondary: {
 			light: '',
 			main: '#7d425e',
 			dark: '#64344b',
-			contrastText: '#fff'
-		}
-	}
+			contrastText: '#fff',
+		},
+	},
 });
 
 interface Props {
@@ -47,7 +47,7 @@ axios.defaults.baseURL =
 const App: React.FC<Props> = ({
 	toggleAuthenticationAC,
 	logOutUser,
-	getUserData
+	getUserData,
 }) => {
 	const token = localStorage.getItem('UserIdToken');
 	useEffect(() => {
@@ -64,22 +64,23 @@ const App: React.FC<Props> = ({
 		} else {
 			logOutUser();
 		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 	return (
 		<MuiThemeProvider theme={theme}>
 			<Navbar />
-			<div className='container'>
+			<div className="container">
 				<Switch>
-					<AuthRoute component={SignUp} path='/signup' />
-					<AuthRoute component={Login} path='/login' />
-					<Route path='/' exact component={Index} />
-					<Route path='/users/:handle' exact>
+					<AuthRoute component={SignUp} path="/signup" />
+					<AuthRoute component={Login} path="/login" />
+					<Route path="/" exact component={Index} />
+					<Route path="/users/:handle" exact>
 						<User />
 					</Route>
-					<Route path='/users/:handle/post/:postId'>
+					<Route path="/users/:handle/post/:postId">
 						<User />
 					</Route>
-					<Route path='*'>
+					<Route path="*">
 						<NotFound />
 					</Route>
 				</Switch>
@@ -91,5 +92,5 @@ const App: React.FC<Props> = ({
 export default connect(null, {
 	toggleAuthenticationAC,
 	logOutUser,
-	getUserData
+	getUserData,
 })(App);
