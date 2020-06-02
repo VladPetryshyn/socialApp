@@ -13,6 +13,7 @@
 7. react-router-dom
 8. axios
 9. dayjs
+10. firebase
 
 In the project directory, you can run:
 ```
