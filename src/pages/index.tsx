@@ -5,28 +5,19 @@ import Post from '../components/Post/PostContainer';
 import Profile from '../components/Profile/Profile';
 import { connect } from 'react-redux';
 import { AppState } from '../redux/root-reducer';
-import { getPosts } from '../redux/data-reducer';
+import { getPosts, Post as PostType } from '../redux/data-reducer';
 import PostSkeleton from '../util/PostSkeleton';
 
-interface State {
-	posts: [
-		{
-			body: string;
-			createdAt: string;
-			userHandle: string;
-			userImage: string;
-			likeCount: number;
-			commentCount: number;
-			postId: string;
-		}
-	];
-}
-
-interface Props {
-	posts: any;
-	getPosts(): void;
+interface StateProps {
+	posts: Array<PostType>;
 	loading: boolean;
 }
+
+interface DispatchProps {
+	getPosts(): void;
+}
+
+type Props = StateProps & DispatchProps;
 
 export const Index: React.FC<Props> = ({ posts, getPosts, loading }) => {
 	useEffect(() => {
@@ -34,7 +25,7 @@ export const Index: React.FC<Props> = ({ posts, getPosts, loading }) => {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 	const recentPostMarkup = !loading ? (
-		posts!.map((post: any) => <Post post={post} key={post.postId} />)
+		posts!.map((post) => <Post post={post} key={post.postId} />)
 	) : (
 		<PostSkeleton />
 	);
@@ -50,11 +41,12 @@ export const Index: React.FC<Props> = ({ posts, getPosts, loading }) => {
 	);
 };
 
-const mapStateToProps = (state: AppState) => {
-	return {
-		posts: state.data.posts,
-		loading: state.data.loading,
-	};
-};
+const mapStateToProps = (state: AppState): StateProps => ({
+	posts: state.data.posts,
+	loading: state.data.loading,
+});
 
-export default connect(mapStateToProps, { getPosts })(Index);
+export default connect<StateProps, DispatchProps, {}, AppState>(
+	mapStateToProps,
+	{ getPosts }
+)(Index);

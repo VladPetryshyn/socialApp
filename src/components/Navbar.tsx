@@ -4,7 +4,7 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Button from '@material-ui/core/Button';
 import { NavLink } from 'react-router-dom';
 import { Icon } from '@material-ui/core';
-import image from '../assets/saniok.png';
+import logo from '../assets/icon.png';
 import { connect } from 'react-redux';
 import { AppState } from '../redux/root-reducer';
 import { MyButton } from '../util/mybtn';
@@ -21,7 +21,7 @@ const Navbar: React.FC<Props> = ({ authenticated }) => {
 			<Toolbar className="nav-container">
 				<Icon>
 					<NavLink to={authenticated ? '/' : '/login'}>
-						<img src={image} alt="logo" width={'100%'} height={'100%'} />
+						<img src={logo} alt="logo" width={'100%'} height={'100%'} />
 					</NavLink>
 				</Icon>
 				{authenticated ? (

@@ -18,7 +18,7 @@ import {
 } from './redux/user-reducer';
 import User from './pages/user';
 
-const theme: any = createMuiTheme({
+const theme = createMuiTheme({
 	palette: {
 		primary: {
 			light: '#7d425e',

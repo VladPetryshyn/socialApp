@@ -13,7 +13,7 @@ import { DevTool } from 'react-hook-form-devtools';
 import s from './signup.module.scss';
 import { Errors } from '../../redux/ui-reducer';
 import { useForm, Controller } from 'react-hook-form';
-import logo from '../../assets/saniok.png';
+import logo from '../../assets/icon.png';
 export interface Props extends WithStyles<typeof styles> {
 	signUpUser(data: FormData, history: any): void;
 	loading: boolean;
@@ -70,7 +70,12 @@ const SignUp: React.FC<Props> = ({ classes, signUpUser, errors, loading }) => {
 						<img
 							src={logo}
 							alt="logo"
-							style={{ cursor: 'pointer', marginBottom: '16px' }}
+							style={{
+								cursor: 'pointer',
+								marginBottom: '16px',
+								width: 100,
+								height: 100,
+							}}
 						/>
 					</NavLink>
 					<Typography variant="h3" className={classes.header}>

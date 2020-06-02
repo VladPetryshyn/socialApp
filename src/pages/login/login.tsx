@@ -7,8 +7,9 @@ import {
 	Grid,
 	Typography,
 	CircularProgress,
+	createStyles,
 } from '@material-ui/core';
-import image from '../../assets/saniok.png';
+import logo from '../../assets/icon.png';
 import { NavLink, useHistory } from 'react-router-dom';
 import s from './login.module.scss';
 import { Errors } from '../../redux/ui-reducer';
@@ -20,7 +21,7 @@ interface Props extends WithStyles<typeof styles> {
 	errors: Errors;
 }
 
-const styles: any = {
+const styles = createStyles({
 	header: {
 		marginBottom: '1em',
 	},
@@ -40,7 +41,7 @@ const styles: any = {
 		display: 'flex',
 		justifyContent: 'center',
 	},
-};
+});
 
 interface FormFields {
 	email: string;
@@ -64,9 +65,14 @@ const Login: React.FC<Props> = ({ classes, loginUser, loading, errors }) => {
 				<div className={s.formContainer}>
 					<NavLink to={'/'}>
 						<img
-							src={image}
+							src={logo}
 							alt="logo"
-							style={{ cursor: 'pointer', marginBottom: '16px' }}
+							style={{
+								cursor: 'pointer',
+								marginBottom: '16px',
+								width: 100,
+								height: 100,
+							}}
 						/>
 					</NavLink>
 					<Typography variant="h3" className={classes.header}>

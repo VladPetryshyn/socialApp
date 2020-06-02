@@ -79,12 +79,11 @@ export const dataReducer = (
 		case UNLIKE_POST:
 			return {
 				...state,
-				posts: state.posts.map((post) => {
-					if (state.post.postId === action.payload.postId) {
-						return action.payload;
-					}
-					return post;
-				}),
+				posts: state.posts.map((post) =>
+					state.post.postId === action.payload.postId
+						? action.payload
+						: post
+				),
 				post:
 					state.post.postId === action.payload.postId
 						? {
@@ -94,13 +93,9 @@ export const dataReducer = (
 						: state.post,
 			};
 		case DELETE_POST:
-			let indexD = state.posts.findIndex(
-				(post) => post.postId === action.payload
-			);
-			state.posts.splice(indexD, 1);
 			return {
 				...state,
-				posts: state.posts.map((post: any) => post),
+				posts: state.posts.filter(post => post.postId !== action.payload)
 			};
 		case ADD_POST:
 			return {
@@ -116,21 +111,15 @@ export const dataReducer = (
 		case SUBMIT_COMMENT:
 			return {
 				...state,
-				posts: state.posts.map((post) => {
-					if (post.postId === state.post.postId) {
-						return {
+				posts: state.posts.map((post) => post.postId === state.post.postId ?
+						{
 							...post,
 							commentsCount: post.commentsCount + 1,
-						};
-					}
-					return post;
-				}),
+						} : post),
 				post: {
 					...state.post,
 					commentsCount: state.post.commentsCount + 1,
-					comments: [action.comment, ...state.post.comments] as Array<
-						Comment
-					>,
+					comments: [action.comment, ...state.post.comments]
 				},
 			};
 		case LIKE_COMMENT:
@@ -139,26 +128,22 @@ export const dataReducer = (
 				...state,
 				post: {
 					...state.post,
-					comments: state.post.comments.map((comment) => {
-						if (comment.commentId === action.payload.commentId) {
-							return action.payload;
-						}
-						return comment;
-					}),
+					comments: state.post.comments.map((comment) => comment.commentId === action.payload.commentId ?
+							action.payload
+						: comment
+					),
 				},
 			};
 		case DELETE_COMMENT:
 			return {
 				...state,
-				posts: state.posts.map((post) => {
-					if (post.postId === state.post.postId) {
-						return {
+				posts: state.posts.map((post) => post.postId === state.post.postId
+						?{
 							...post,
 							commentsCount: post.commentsCount - 1,
-						};
-					}
-					return post;
-				}),
+						}:post
+					
+				),
 				post: {
 					...state.post,
 					commentsCount: state.post.commentsCount - 1,
@@ -170,31 +155,22 @@ export const dataReducer = (
 		case CHANGE_POST_BODY:
 			return {
 				...state,
-				posts: state.posts.map((post) => {
-					if (post.postId === action.payload.postId) {
-						return {
+				posts: state.posts.map((post) => post.postId === action.payload.postId ? {
 							...post,
 							body: action.payload.body,
-						};
-					}
-					return post;
-				}),
+						}:  post),
 			};
 		case CHANGE_COMMENT_BODY:
 			return {
 				...state,
 				post: {
 					...state.post,
-					comments: state.post.comments.map((comment) => {
-						if (comment.commentId === action.payload.commentId) {
-							return {
+					comments: state.post.comments.map((comment) => comment.commentId === action.payload.commentId ? {
 								...comment,
 								body: action.payload.body,
 								isEdited: true,
-							};
-						}
-						return comment;
-					}),
+							} :comment
+						),
 				},
 			};
 		default:
