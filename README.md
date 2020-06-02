@@ -11,7 +11,8 @@
 5. redux-thunk
 6. react-hook-form
 7. react-router-dom
-
+8. axios
+9. dayjs
 In the project directory, you can run:
 ```
 npm i
