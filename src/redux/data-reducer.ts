@@ -80,9 +80,7 @@ export const dataReducer = (
 			return {
 				...state,
 				posts: state.posts.map((post) =>
-					state.post.postId === action.payload.postId
-						? action.payload
-						: post
+					post.postId === action.payload.postId ? action.payload : post
 				),
 				post:
 					state.post.postId === action.payload.postId
@@ -95,7 +93,7 @@ export const dataReducer = (
 		case DELETE_POST:
 			return {
 				...state,
-				posts: state.posts.filter(post => post.postId !== action.payload)
+				posts: state.posts.filter((post) => post.postId !== action.payload),
 			};
 		case ADD_POST:
 			return {
@@ -111,15 +109,18 @@ export const dataReducer = (
 		case SUBMIT_COMMENT:
 			return {
 				...state,
-				posts: state.posts.map((post) => post.postId === state.post.postId ?
-						{
-							...post,
-							commentsCount: post.commentsCount + 1,
-						} : post),
+				posts: state.posts.map((post) =>
+					post.postId === state.post.postId
+						? {
+								...post,
+								commentsCount: post.commentsCount + 1,
+						  }
+						: post
+				),
 				post: {
 					...state.post,
 					commentsCount: state.post.commentsCount + 1,
-					comments: [action.comment, ...state.post.comments]
+					comments: [action.comment, ...state.post.comments],
 				},
 			};
 		case LIKE_COMMENT:
@@ -128,49 +129,58 @@ export const dataReducer = (
 				...state,
 				post: {
 					...state.post,
-					comments: state.post.comments.map((comment) => comment.commentId === action.payload.commentId ?
-							action.payload
-						: comment
+					comments: state.post.comments.map((comment) =>
+						comment.commentId === action.payload.commentId
+							? action.payload
+							: comment
 					),
 				},
 			};
 		case DELETE_COMMENT:
 			return {
 				...state,
-				posts: state.posts.map((post) => post.postId === state.post.postId
-						?{
-							...post,
-							commentsCount: post.commentsCount - 1,
-						}:post
-					
+				posts: state.posts.map((post) =>
+					post.postId === state.post.postId
+						? {
+								...post,
+								commentsCount: post.commentsCount - 1,
+						  }
+						: post
 				),
 				post: {
 					...state.post,
 					commentsCount: state.post.commentsCount - 1,
 					comments: state.post.comments.filter(
 						(comment) => comment.commentId !== action.commentId
-					),
+					),	
 				},
 			};
 		case CHANGE_POST_BODY:
 			return {
 				...state,
-				posts: state.posts.map((post) => post.postId === action.payload.postId ? {
-							...post,
-							body: action.payload.body,
-						}:  post),
+				posts: state.posts.map((post) =>
+					post.postId === action.payload.postId
+						? {
+								...post,
+								body: action.payload.body,
+						  }
+						: post
+				),
 			};
 		case CHANGE_COMMENT_BODY:
 			return {
 				...state,
 				post: {
 					...state.post,
-					comments: state.post.comments.map((comment) => comment.commentId === action.payload.commentId ? {
-								...comment,
-								body: action.payload.body,
-								isEdited: true,
-							} :comment
-						),
+					comments: state.post.comments.map((comment) =>
+						comment.commentId === action.payload.commentId
+							? {
+									...comment,
+									body: action.payload.body,
+									isEdited: true,
+							  }
+							: comment
+					),
 				},
 			};
 		default:
